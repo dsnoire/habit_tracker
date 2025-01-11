@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/colors/app_colors.dart';
 
-class RegisterForm extends StatelessWidget {
-  const RegisterForm({super.key});
+class LoginForm extends StatelessWidget {
+  const LoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +16,15 @@ class RegisterForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _RegisterHeader(),
+              _LoginHeader(),
               const Spacer(),
               _EmailTextInput(),
               const SizedBox(height: 24),
               _PasswordTextInput(),
               const SizedBox(height: 24),
-              _ConfirmPasswordTextInput(),
+              _LoginButton(),
               const SizedBox(height: 24),
-              _RegisterButton(),
-              const SizedBox(height: 24),
-              _NavigateToLoginButton(),
+              _NavigateToRegisterButton(),
             ],
           ),
         ),
@@ -61,43 +59,30 @@ class _PasswordTextInput extends StatelessWidget {
   }
 }
 
-class _ConfirmPasswordTextInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.lock_rounded),
-        labelText: 'Confirm password',
-      ),
-      obscureText: true,
-    );
-  }
-}
-
-class _RegisterButton extends StatelessWidget {
+class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {},
-      child: const Text('Register'),
+      child: const Text('Login'),
     );
   }
 }
 
-class _NavigateToLoginButton extends StatelessWidget {
+class _NavigateToRegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => context.go('/login'),
+      onPressed: () => context.go('/register'),
       child: RichText(
         text: const TextSpan(
-          text: 'Already have an account? ',
+          text: 'Don\'t have an account yet? ',
           style: TextStyle(
             color: AppColors.grey,
           ),
           children: [
             TextSpan(
-              text: 'Log in here',
+              text: 'Register here',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -109,13 +94,13 @@ class _NavigateToLoginButton extends StatelessWidget {
   }
 }
 
-class _RegisterHeader extends StatelessWidget {
+class _LoginHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          'Create account',
+          'Login',
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

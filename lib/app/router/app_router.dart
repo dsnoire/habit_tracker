@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:habit_tracker/register/view/register_page.dart';
 
 import '../../home/view/home_page.dart';
+import '../../login/view/login_page.dart';
 import '../../navigation/view/navigation.dart';
 import '../../statistics/view/statistics_page.dart';
 
@@ -19,6 +20,16 @@ abstract class AppRouter {
         pageBuilder: (context, state) {
           return NoTransitionPage(
             child: RegisterPage(
+              key: state.pageKey,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/login',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: LoginPage(
               key: state.pageKey,
             ),
           );
