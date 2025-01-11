@@ -43,23 +43,24 @@ class _BottomNavBarState extends State<BottomNavBar> {
         },
         elevation: 0,
         backgroundColor: Colors.transparent,
-        showUnselectedLabels: false,
+        showUnselectedLabels: true,
         showSelectedLabels: true,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             activeIcon: _BottomNavBarItemIcon(
               path: 'assets/icons/home_filled.svg',
-              color: Colors.black,
+              color: AppColors.onSurface,
             ),
             icon: _BottomNavBarItemIcon(
-              path: 'assets/icons/home.svg',
+              path: 'assets/icons/home_filled.svg',
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             activeIcon: _BottomNavBarItemIcon(
               path: 'assets/icons/statistics.svg',
-              color: Colors.black,
+              color: AppColors.onSurface,
             ),
             icon: _BottomNavBarItemIcon(
               path: 'assets/icons/statistics.svg',
@@ -88,7 +89,7 @@ class _BottomNavBarItemIcon extends StatelessWidget {
       child: SvgPicture.asset(
         path,
         colorFilter: ColorFilter.mode(
-          color ?? AppColors.grey,
+          color ?? AppColors.surfaceBright,
           BlendMode.srcIn,
         ),
         fit: BoxFit.cover,

@@ -13,12 +13,26 @@ class NavigationRoot extends StatelessWidget {
     return Scaffold(
       body: child,
       bottomNavigationBar: const BottomNavBar(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        shape: CircleBorder(),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: AddHabit(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+}
+
+class AddHabit extends StatelessWidget {
+  const AddHabit({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {},
+      shape: CircleBorder(),
+      child: const Icon(
+        Icons.add,
+        size: 26,
+      ),
     );
   }
 }
