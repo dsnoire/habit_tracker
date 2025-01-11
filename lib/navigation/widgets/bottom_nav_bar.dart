@@ -86,8 +86,8 @@ class _BottomNavBarItemIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 30,
-      width: 30,
+      height: 33,
+      width: 33,
       child: SvgPicture.asset(
         path,
         colorFilter: ColorFilter.mode(

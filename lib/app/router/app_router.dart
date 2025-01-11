@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habit_tracker/register/view/register_page.dart';
 
 import '../../home/view/home_page.dart';
 import '../../navigation/view/navigation.dart';
@@ -11,8 +12,18 @@ final GlobalKey<NavigatorState> _shellNavigator = GlobalKey(debugLabel: 'shell')
 abstract class AppRouter {
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigator,
-    initialLocation: '/home',
+    initialLocation: '/register',
     routes: [
+      GoRoute(
+        path: '/register',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: RegisterPage(
+              key: state.pageKey,
+            ),
+          );
+        },
+      ),
       ShellRoute(
         navigatorKey: _shellNavigator,
         builder: (
