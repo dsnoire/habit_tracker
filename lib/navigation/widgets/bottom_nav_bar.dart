@@ -32,6 +32,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       data: Theme.of(context).copyWith(
         splashFactory: NoSplash.splashFactory,
         splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
       ),
       child: BottomNavigationBar(
         currentIndex: currentIndex,
@@ -43,14 +45,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
         },
         elevation: 0,
         backgroundColor: Colors.transparent,
-        showUnselectedLabels: true,
-        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        showSelectedLabels: false,
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             activeIcon: _BottomNavBarItemIcon(
               path: 'assets/icons/home_filled.svg',
-              color: AppColors.onSurface,
+              color: AppColors.white,
             ),
             icon: _BottomNavBarItemIcon(
               path: 'assets/icons/home_filled.svg',
@@ -60,7 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           BottomNavigationBarItem(
             activeIcon: _BottomNavBarItemIcon(
               path: 'assets/icons/statistics.svg',
-              color: AppColors.onSurface,
+              color: AppColors.white,
             ),
             icon: _BottomNavBarItemIcon(
               path: 'assets/icons/statistics.svg',
@@ -84,12 +86,12 @@ class _BottomNavBarItemIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 28,
-      width: 28,
+      height: 30,
+      width: 30,
       child: SvgPicture.asset(
         path,
         colorFilter: ColorFilter.mode(
-          color ?? AppColors.surfaceBright,
+          color ?? AppColors.grey,
           BlendMode.srcIn,
         ),
         fit: BoxFit.cover,

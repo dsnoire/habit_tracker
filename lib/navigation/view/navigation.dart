@@ -26,12 +26,18 @@ class AddHabit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {},
-      shape: CircleBorder(),
-      child: const Icon(
-        Icons.add,
-        size: 26,
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: FloatingActionButton(
+        elevation: 0,
+        highlightElevation: 0,
+        onPressed: () {},
+        shape: CircleBorder(),
+        child: const Icon(
+          Icons.add,
+          size: 26,
+        ),
       ),
     );
   }
