@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/colors/app_colors.dart';
+import '../bloc/login_bloc.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -36,10 +39,13 @@ class LoginForm extends StatelessWidget {
 class _EmailTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final displayError = context.select((LoginBloc bloc) => bloc.state.email.displayError);
     return TextField(
+      onChanged: (value) => context.read<LoginBloc>().add(LoginEmailChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.email_outlined),
         labelText: 'E-mail',
+        errorText: displayError != null ? 'Invalid email' : null,
       ),
       keyboardType: TextInputType.emailAddress,
     );
@@ -49,10 +55,13 @@ class _EmailTextInput extends StatelessWidget {
 class _PasswordTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final displayError = context.select((LoginBloc bloc) => bloc.state.password.displayError);
     return TextField(
+      onChanged: (value) => context.read<LoginBloc>().add(LoginPasswordChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.lock_open_rounded),
         labelText: 'Password',
+        errorText: displayError != null ? 'Invalid password' : null,
       ),
       obscureText: true,
     );
@@ -62,8 +71,14 @@ class _PasswordTextInput extends StatelessWidget {
 class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isInProgress = context.select((LoginBloc bloc) => bloc.state.status.isInProgress);
+
+    if (isInProgress) return const CircularProgressIndicator();
+
+    final isValid = context.select((LoginBloc bloc) => bloc.state.isValid);
+
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: isValid ? () => context.read<LoginBloc>().add(LoginFormSubmitted()) : null,
       child: const Text('Login'),
     );
   }
