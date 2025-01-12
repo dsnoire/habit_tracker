@@ -1,4 +1,7 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_tracker/register/bloc/register_bloc.dart';
 
 import 'register_form.dart';
 
@@ -11,7 +14,10 @@ class RegisterPage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: RegisterForm(),
+          child: BlocProvider(
+            create: (context) => RegisterBloc(context.read<AuthenticationRepository>()),
+            child: RegisterForm(),
+          ),
         ),
       ),
     );
