@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habit_tracker/register/bloc/register_bloc.dart';
 
 import '../../app/colors/app_colors.dart';
 
@@ -38,10 +41,13 @@ class RegisterForm extends StatelessWidget {
 class _EmailTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final displayError = context.select((RegisterBloc bloc) => bloc.state.email.displayError);
     return TextField(
+      onChanged: (value) => context.read<RegisterBloc>().add(RegisterEmailChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.email_outlined),
         labelText: 'E-mail',
+        errorText: displayError != null ? 'Invalid email' : null,
       ),
       keyboardType: TextInputType.emailAddress,
     );
@@ -51,10 +57,13 @@ class _EmailTextInput extends StatelessWidget {
 class _PasswordTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final displayError = context.select((RegisterBloc bloc) => bloc.state.password.displayError);
     return TextField(
+      onChanged: (value) => context.read<RegisterBloc>().add(RegisterPasswordChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.lock_open_rounded),
         labelText: 'Password',
+        errorText: displayError != null ? 'Invalid password' : null,
       ),
       obscureText: true,
     );
@@ -64,10 +73,13 @@ class _PasswordTextInput extends StatelessWidget {
 class _ConfirmPasswordTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final displayError = context.select((RegisterBloc bloc) => bloc.state.confirmedPassword.displayError);
     return TextField(
+      onChanged: (value) => context.read<RegisterBloc>().add(RegisterConfirmedPasswordChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.lock_rounded),
         labelText: 'Confirm password',
+        errorText: displayError != null ? 'Passwords do not match' : null,
       ),
       obscureText: true,
     );
@@ -77,8 +89,14 @@ class _ConfirmPasswordTextInput extends StatelessWidget {
 class _RegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isInProgress = context.select((RegisterBloc bloc) => bloc.state.status.isInProgress);
+
+    if (isInProgress) return const CircularProgressIndicator();
+
+    final isValid = context.select((RegisterBloc bloc) => bloc.state.isValid);
+
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: isValid ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted()) : null,
       child: const Text('Register'),
     );
   }
