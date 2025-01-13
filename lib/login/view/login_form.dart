@@ -12,23 +12,36 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 70),
-        child: IntrinsicHeight(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _LoginHeader(),
-              const Spacer(),
-              _EmailTextInput(),
-              const SizedBox(height: 24),
-              _PasswordTextInput(),
-              const SizedBox(height: 24),
-              _LoginButton(),
-              const SizedBox(height: 24),
-              _NavigateToRegisterButton(),
-            ],
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.status.isFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? 'Login failure'),
+              ),
+            );
+        }
+      },
+      child: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 70),
+          child: IntrinsicHeight(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _LoginHeader(),
+                const Spacer(),
+                _EmailTextInput(),
+                const SizedBox(height: 24),
+                _PasswordTextInput(),
+                const SizedBox(height: 24),
+                _LoginButton(),
+                const SizedBox(height: 24),
+                _NavigateToRegisterButton(),
+              ],
+            ),
           ),
         ),
       ),

@@ -12,25 +12,38 @@ class RegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 70),
-        child: IntrinsicHeight(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _RegisterHeader(),
-              const Spacer(),
-              _EmailTextInput(),
-              const SizedBox(height: 24),
-              _PasswordTextInput(),
-              const SizedBox(height: 24),
-              _ConfirmPasswordTextInput(),
-              const SizedBox(height: 24),
-              _RegisterButton(),
-              const SizedBox(height: 24),
-              _NavigateToLoginButton(),
-            ],
+    return BlocListener<RegisterBloc, RegisterState>(
+      listener: (context, state) {
+        if (state.status.isFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? 'Register failure'),
+              ),
+            );
+        }
+      },
+      child: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 70),
+          child: IntrinsicHeight(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _RegisterHeader(),
+                const Spacer(),
+                _EmailTextInput(),
+                const SizedBox(height: 24),
+                _PasswordTextInput(),
+                const SizedBox(height: 24),
+                _ConfirmPasswordTextInput(),
+                const SizedBox(height: 24),
+                _RegisterButton(),
+                const SizedBox(height: 24),
+                _NavigateToLoginButton(),
+              ],
+            ),
           ),
         ),
       ),
