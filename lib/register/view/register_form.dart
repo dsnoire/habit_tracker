@@ -13,6 +13,7 @@ class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
+      listenWhen: (previous, current) => !previous.status.isFailure,
       listener: (context, state) {
         if (state.status.isFailure) {
           ScaffoldMessenger.of(context)

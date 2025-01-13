@@ -24,6 +24,10 @@ class RegisterFailure implements Exception {
         return const RegisterFailure(
           'Please enter a stronger password.',
         );
+      case 'network-request-failed':
+        return const RegisterFailure(
+          'Network request error. Please check internet connection.',
+        );
       default:
         return const RegisterFailure();
     }
@@ -31,7 +35,7 @@ class RegisterFailure implements Exception {
 }
 
 class LoginFailure implements Exception {
-  const LoginFailure([this.message = 'An unknown exception occured.']);
+  const LoginFailure([this.message = 'An unknown exception occured. Please try to log in again.']);
   final String message;
 
   factory LoginFailure.fromCode(String code) {
@@ -51,6 +55,18 @@ class LoginFailure implements Exception {
       case 'wrong-password':
         return const LoginFailure(
           'Incorrect password, please try again.',
+        );
+      case 'too-many-requests':
+        return const LoginFailure(
+          'Too many requests. Please wait for some time.',
+        );
+      case 'user-token-expired':
+        return const LoginFailure(
+          'This account is no longer authenticated.',
+        );
+      case 'network-request-failed':
+        return const LoginFailure(
+          'Network request error. Please check internet connection.',
         );
       default:
         return const LoginFailure();
@@ -74,6 +90,7 @@ class AuthenticationRepository {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
+      print('FirebaseAuthException: ${e.code}'); // Add this for debugging
       throw RegisterFailure.fromCode(e.code);
     } catch (_) {
       throw const RegisterFailure();
