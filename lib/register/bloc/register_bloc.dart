@@ -3,12 +3,16 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc(this._authenticationRepository) : super(const RegisterState()) {
+  RegisterBloc(
+    this._authenticationRepository,
+    this._userRepository,
+  ) : super(const RegisterState()) {
     on<RegisterEmailChanged>(_onEmailChanged);
     on<RegisterPasswordChanged>(_onPasswordChanged);
     on<RegisterConfirmedPasswordChanged>(_onConfirmedPasswordChanged);
@@ -16,6 +20,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   final AuthenticationRepository _authenticationRepository;
+  final UserRepository _userRepository;
 
   void _onEmailChanged(RegisterEmailChanged event, Emitter<RegisterState> emit) {
     final email = Email.dirty(event.email);
@@ -80,6 +85,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         email: state.email.value,
         password: state.password.value,
       );
+      await _userRepository.createUserCollection();
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on RegisterFailure catch (e) {
       emit(

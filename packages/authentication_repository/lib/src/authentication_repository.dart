@@ -90,7 +90,6 @@ class AuthenticationRepository {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      print('FirebaseAuthException: ${e.code}'); // Add this for debugging
       throw RegisterFailure.fromCode(e.code);
     } catch (_) {
       throw const RegisterFailure();
