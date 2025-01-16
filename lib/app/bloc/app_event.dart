@@ -8,3 +8,5 @@ sealed class AppEvent extends Equatable {
 }
 
 final class AppUserSubscriptionRequested extends AppEvent {}
+
+final class AppLogOutPressed extends AppEvent {}

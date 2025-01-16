@@ -28,7 +28,10 @@ class App extends StatelessWidget {
       ],
       child: BlocProvider(
         lazy: false,
-        create: (context) => AppBloc(_userRepository)..add(AppUserSubscriptionRequested()),
+        create: (context) => AppBloc(
+          _userRepository,
+          _authenticationRepository,
+        )..add(AppUserSubscriptionRequested()),
         child: AppView(),
       ),
     );
@@ -44,7 +47,7 @@ class AppView extends StatelessWidget {
       title: 'Habit Tracker',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
-      routerConfig: AppRouter.router,
+      routerConfig: AppRouter(context.read<AppBloc>()).router,
     );
   }
 }
