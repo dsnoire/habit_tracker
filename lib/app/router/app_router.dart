@@ -7,6 +7,7 @@ import 'package:habit_tracker/register/view/register_page.dart';
 import '../../home/view/home_page.dart';
 import '../../login/view/login_page.dart';
 import '../../navigation/view/navigation.dart';
+import '../../settings/view/settings_page.dart';
 import '../../statistics/view/statistics_page.dart';
 import '../bloc/app_bloc.dart';
 
@@ -31,7 +32,7 @@ class AppRouter {
           if (isAuthenticated && state.uri.path == '/register') {
             return '/home';
           }
-          if (!isAuthenticated && state.uri.path == '/home') {
+          if (!isAuthenticated && state.uri.path == '/settings') {
             return '/login';
           }
           return null;
@@ -39,7 +40,10 @@ class AppRouter {
         routes: [
           StatefulShellRoute.indexedStack(
             builder: (context, state, navigationShell) {
-              return NavigationRoot(navigationShell: navigationShell);
+              return NavigationRoot(
+                navigationShell: navigationShell,
+                key: state.pageKey,
+              );
             },
             branches: [
               StatefulShellBranch(
@@ -48,6 +52,7 @@ class AppRouter {
                   GoRoute(
                     path: '/home',
                     pageBuilder: (context, state) => NoTransitionPage(
+                      key: state.pageKey,
                       child: HomePage(),
                     ),
                   )
@@ -59,6 +64,7 @@ class AppRouter {
                   GoRoute(
                     path: '/statistics',
                     pageBuilder: (context, state) => NoTransitionPage(
+                      key: state.pageKey,
                       child: StatisticsPage(),
                     ),
                   )
@@ -81,6 +87,16 @@ class AppRouter {
             pageBuilder: (context, state) {
               return NoTransitionPage(
                 child: LoginPage(
+                  key: state.pageKey,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: '/settings',
+            pageBuilder: (context, state) {
+              return NoTransitionPage(
+                child: SettingsPage(
                   key: state.pageKey,
                 ),
               );
