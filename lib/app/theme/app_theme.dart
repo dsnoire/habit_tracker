@@ -3,6 +3,7 @@ import "package:habit_tracker/app/colors/app_colors.dart";
 
 class AppTheme {
   static final theme = ThemeData(
+    fontFamily: 'Montserrat',
     colorScheme: const ColorScheme.dark(
       primary: AppColors.white,
       secondary: AppColors.white,
