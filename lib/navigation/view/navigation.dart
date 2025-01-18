@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habit_tracker/navigation/widgets/bottom_nav_bar.dart';
 
 class NavigationRoot extends StatelessWidget {
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
   const NavigationRoot({
     super.key,
-    required this.child,
+    required this.navigationShell,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: child,
-      bottomNavigationBar: const BottomNavBar(),
+      body: navigationShell,
+      bottomNavigationBar: BottomNavBar(navigationShell: navigationShell),
       floatingActionButton: AddHabit(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

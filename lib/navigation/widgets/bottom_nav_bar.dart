@@ -4,73 +4,51 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/colors/app_colors.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+class BottomNavBar extends StatelessWidget {
+  const BottomNavBar({
+    super.key,
+    required this.navigationShell,
+  });
 
-  @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
-}
+  final StatefulNavigationShell navigationShell;
 
-class _BottomNavBarState extends State<BottomNavBar> {
-  int currentIndex = 0;
-
-  void _onTap(int index) {
-    switch (index) {
-      case 0:
-        context.go('/home');
-        break;
-      case 1:
-        context.go('/statistics');
-        break;
-      default:
-    }
+  void _goBranch(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        splashFactory: NoSplash.splashFactory,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-      ),
-      child: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (value) {
-          setState(() {
-            currentIndex = value;
-          });
-          _onTap(value);
-        },
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            activeIcon: _BottomNavBarItemIcon(
-              path: 'assets/icons/home_filled.svg',
-              color: AppColors.white,
-            ),
-            icon: _BottomNavBarItemIcon(
-              path: 'assets/icons/home_filled.svg',
-            ),
-            label: 'Home',
+    return NavigationBar(
+      selectedIndex: navigationShell.currentIndex,
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      indicatorColor: Colors.transparent,
+      destinations: [
+        NavigationDestination(
+          icon: _BottomNavBarItemIcon(
+            path: 'assets/icons/home_filled.svg',
           ),
-          BottomNavigationBarItem(
-            activeIcon: _BottomNavBarItemIcon(
-              path: 'assets/icons/statistics.svg',
-              color: AppColors.white,
-            ),
-            icon: _BottomNavBarItemIcon(
-              path: 'assets/icons/statistics.svg',
-            ),
-            label: 'Statistics',
+          selectedIcon: _BottomNavBarItemIcon(
+            path: 'assets/icons/home_filled.svg',
+            color: AppColors.white,
           ),
-        ],
-      ),
+          label: 'Home',
+        ),
+        NavigationDestination(
+          icon: _BottomNavBarItemIcon(
+            path: 'assets/icons/statistics.svg',
+          ),
+          selectedIcon: _BottomNavBarItemIcon(
+            path: 'assets/icons/statistics.svg',
+            color: AppColors.white,
+          ),
+          label: 'Statistics',
+        ),
+      ],
+      onDestinationSelected: _goBranch,
     );
   }
 }
@@ -86,8 +64,8 @@ class _BottomNavBarItemIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 33,
-      width: 33,
+      height: 30,
+      width: 30,
       child: SvgPicture.asset(
         path,
         colorFilter: ColorFilter.mode(

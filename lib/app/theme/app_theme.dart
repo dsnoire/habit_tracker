@@ -8,7 +8,7 @@ class AppTheme {
       secondary: AppColors.white,
       onSurface: AppColors.white,
       onSurfaceVariant: AppColors.grey,
-      onSecondary: Colors.red,
+      onSecondary: AppColors.white,
       tertiary: Colors.blue,
       onTertiary: Colors.yellow,
       surface: AppColors.darkGrey,

@@ -11,7 +11,8 @@ import '../../statistics/view/statistics_page.dart';
 import '../bloc/app_bloc.dart';
 
 final GlobalKey<NavigatorState> _rootNavigator = GlobalKey(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigator = GlobalKey(debugLabel: 'shell');
+final GlobalKey<NavigatorState> _shellNavigatorHome = GlobalKey(debugLabel: 'home');
+final GlobalKey<NavigatorState> _shellNavigatorStatistics = GlobalKey(debugLabel: 'stats');
 
 class AppRouter {
   AppRouter(this._appBloc);
@@ -36,6 +37,35 @@ class AppRouter {
           return null;
         },
         routes: [
+          StatefulShellRoute.indexedStack(
+            builder: (context, state, navigationShell) {
+              return NavigationRoot(navigationShell: navigationShell);
+            },
+            branches: [
+              StatefulShellBranch(
+                navigatorKey: _shellNavigatorHome,
+                routes: [
+                  GoRoute(
+                    path: '/home',
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      child: HomePage(),
+                    ),
+                  )
+                ],
+              ),
+              StatefulShellBranch(
+                navigatorKey: _shellNavigatorStatistics,
+                routes: [
+                  GoRoute(
+                    path: '/statistics',
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      child: StatisticsPage(),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
           GoRoute(
             path: '/register',
             pageBuilder: (context, state) {
@@ -55,40 +85,6 @@ class AppRouter {
                 ),
               );
             },
-          ),
-          ShellRoute(
-            navigatorKey: _shellNavigator,
-            builder: (
-              context,
-              state,
-              child,
-            ) =>
-                NavigationRoot(
-              key: state.pageKey,
-              child: child,
-            ),
-            routes: [
-              GoRoute(
-                path: '/home',
-                pageBuilder: (context, state) {
-                  return NoTransitionPage(
-                    child: HomePage(
-                      key: state.pageKey,
-                    ),
-                  );
-                },
-              ),
-              GoRoute(
-                path: '/statistics',
-                pageBuilder: (context, state) {
-                  return NoTransitionPage(
-                    child: StatisticsPage(
-                      key: state.pageKey,
-                    ),
-                  );
-                },
-              ),
-            ],
           ),
         ],
       );
