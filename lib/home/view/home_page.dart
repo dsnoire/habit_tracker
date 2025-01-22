@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: IconButton(
-              onPressed: () => context.go('/settings'),
+              onPressed: () => context.push('/settings'),
               icon: Icon(
                 Icons.settings,
                 color: AppColors.white,

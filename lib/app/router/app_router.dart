@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habit_tracker/register/view/register_page.dart';
 
@@ -11,9 +12,7 @@ import '../../settings/view/settings_page.dart';
 import '../../statistics/view/statistics_page.dart';
 import '../bloc/app_bloc.dart';
 
-final GlobalKey<NavigatorState> _rootNavigator = GlobalKey(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorHome = GlobalKey(debugLabel: 'home');
-final GlobalKey<NavigatorState> _shellNavigatorStatistics = GlobalKey(debugLabel: 'stats');
+final _rootNavigator = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 class AppRouter {
   AppRouter(this._appBloc);
@@ -21,33 +20,17 @@ class AppRouter {
 
   GoRouter get router => GoRouter(
         navigatorKey: _rootNavigator,
-        initialLocation: '/register',
-        refreshListenable: _GoRouterAppBlocRefreshStream(_appBloc.stream),
-        redirect: (context, state) {
-          final isAuthenticated = _appBloc.state.status == AppStatus.authenticated;
-
-          if (isAuthenticated && state.uri.path == '/login') {
-            return '/home';
-          }
-          if (isAuthenticated && state.uri.path == '/register') {
-            return '/home';
-          }
-          if (!isAuthenticated && state.uri.path == '/settings') {
-            return '/login';
-          }
-          return null;
-        },
+        debugLogDiagnostics: true,
+        initialLocation: '/login',
         routes: [
           StatefulShellRoute.indexedStack(
             builder: (context, state, navigationShell) {
               return NavigationRoot(
                 navigationShell: navigationShell,
-                key: state.pageKey,
               );
             },
             branches: [
               StatefulShellBranch(
-                navigatorKey: _shellNavigatorHome,
                 routes: [
                   GoRoute(
                     path: '/home',
@@ -59,7 +42,6 @@ class AppRouter {
                 ],
               ),
               StatefulShellBranch(
-                navigatorKey: _shellNavigatorStatistics,
                 routes: [
                   GoRoute(
                     path: '/statistics',
@@ -76,9 +58,7 @@ class AppRouter {
             path: '/register',
             pageBuilder: (context, state) {
               return NoTransitionPage(
-                child: RegisterPage(
-                  key: state.pageKey,
-                ),
+                child: RegisterPage(),
               );
             },
           ),
@@ -86,14 +66,13 @@ class AppRouter {
             path: '/login',
             pageBuilder: (context, state) {
               return NoTransitionPage(
-                child: LoginPage(
-                  key: state.pageKey,
-                ),
+                child: LoginPage(),
               );
             },
           ),
           GoRoute(
             path: '/settings',
+            parentNavigatorKey: _rootNavigator,
             pageBuilder: (context, state) {
               return NoTransitionPage(
                 child: SettingsPage(
@@ -103,6 +82,17 @@ class AppRouter {
             },
           ),
         ],
+        redirect: (context, state) {
+          final isAuthenticated = _appBloc.state.status == AppStatus.authenticated;
+          final isInHome = state.matchedLocation == '/home';
+          final isAuthenticating = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+
+          if (isInHome && !isAuthenticated) return '/login';
+          if (!isAuthenticated) return '/login';
+          if (isAuthenticating && isAuthenticated) return '/home';
+          return null;
+        },
+        refreshListenable: _GoRouterAppBlocRefreshStream(_appBloc.stream),
       );
 }
 
