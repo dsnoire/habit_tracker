@@ -21,6 +21,8 @@ dependencies:
     path: packages/authentication_repository
   user_repository:
     path: packages/user_repository
+  database_client:
+    path: packages/database_client
   formz: ^0.8.0
   firebase_core: ^3.10.0
 

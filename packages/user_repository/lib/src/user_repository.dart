@@ -1,14 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:database_client/database_client.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:user_repository/src/models/user_model.dart';
 
 class UserRepository {
-  UserRepository({FirebaseAuth? firebaseAuth, FirebaseFirestore? firebaseFirestore})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
+  UserRepository({
+    FirebaseAuth? firebaseAuth,
+    required DatabaseClient databaseClient,
+  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+        _databaseClient = databaseClient;
 
   final FirebaseAuth _firebaseAuth;
-  final FirebaseFirestore _firebaseFirestore;
+  final DatabaseClient _databaseClient;
 
   UserModel? currentUser;
 
@@ -22,18 +23,10 @@ class UserRepository {
     );
   }
 
-  Future<void> createUserCollection() async {
+  Future<void> createUser() async {
     final user = currentUser;
     if (user == null) return;
-
-    final usersCollection = _firebaseFirestore.collection('users').doc(user.id);
-    await usersCollection.set(
-      {
-        'name': user.name,
-        'email': user.email,
-        'createdAt': Timestamp.now(),
-      },
-    );
+    await _databaseClient.createUser(user: user);
   }
 }
 

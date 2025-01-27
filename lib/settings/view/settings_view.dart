@@ -1,7 +1,7 @@
+import 'package:database_client/database_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_tracker/app/bloc/app_bloc.dart';
-import 'package:user_repository/user_repository.dart';
 
 import '../../app/colors/app_colors.dart';
 
