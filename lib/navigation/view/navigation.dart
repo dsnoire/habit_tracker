@@ -33,7 +33,7 @@ class AddHabit extends StatelessWidget {
       child: FloatingActionButton(
         elevation: 0,
         highlightElevation: 0,
-        onPressed: () {},
+        onPressed: () => context.push('/new-habit'),
         shape: CircleBorder(),
         child: const Icon(
           Icons.add,
