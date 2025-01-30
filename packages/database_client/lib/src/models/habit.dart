@@ -1,6 +1,9 @@
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'habit.g.dart';
+
+@JsonSerializable()
 class Habit extends Equatable {
   const Habit({
     required this.id,
@@ -9,24 +12,10 @@ class Habit extends Equatable {
   final String id;
   final String name;
 
+  factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HabitToJson(this);
+
   @override
-  List<Object?> get props => [id, name];
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-    };
-  }
-
-  factory Habit.fromMap(Map<String, dynamic> map) {
-    return Habit(
-      id: map['id'] as String,
-      name: map['name'] as String,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Habit.fromJson(String source) => Habit.fromMap(json.decode(source) as Map<String, dynamic>);
+  List<Object> get props => [id, name];
 }

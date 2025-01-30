@@ -53,7 +53,7 @@ class DatabaseClient {
 
   Future<void> addHabit(Habit habit) async {
     try {
-      await _firestore.collection('users').doc(_userId).collection('habits').add(habit.toMap());
+      await _firestore.collection('users').doc(_userId).collection('habits').add(habit.toJson());
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
@@ -73,7 +73,7 @@ class DatabaseClient {
 
   Future<void> editHabit(String habitId, Habit updatedHabit) async {
     try {
-      await _firestore.collection('users').doc(_userId).collection('habits').doc(habitId).update(updatedHabit.toMap());
+      await _firestore.collection('users').doc(_userId).collection('habits').doc(habitId).update(updatedHabit.toJson());
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
@@ -84,7 +84,7 @@ class DatabaseClient {
   Future<List<Habit>> getAllHabits() async {
     try {
       final snapshot = await _firestore.collection('users').doc(_userId).collection('habits').get();
-      return snapshot.docs.map((doc) => Habit.fromMap(doc.data())).toList();
+      return snapshot.docs.map((doc) => Habit.fromJson(doc.data())).toList();
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
