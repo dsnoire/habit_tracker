@@ -5,6 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/colors/app_colors.dart';
+import '../../app/spacing/app_spacing.dart';
 import '../bloc/login_bloc.dart';
 
 class LoginForm extends StatelessWidget {
@@ -35,11 +36,11 @@ class LoginForm extends StatelessWidget {
                 _LoginHeader(),
                 const Spacer(),
                 _EmailTextInput(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.mlg),
                 _PasswordTextInput(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.mlg),
                 _LoginButton(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.mlg),
                 _NavigateToRegisterButton(),
               ],
             ),
@@ -135,7 +136,7 @@ class _LoginHeader extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: AppSpacing.xxlg),
         SvgPicture.asset(
           'assets/images/auth.svg',
           height: 220,

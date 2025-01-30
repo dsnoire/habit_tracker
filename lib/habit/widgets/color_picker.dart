@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habit_tracker/app/colors/app_colors.dart';
+
+import '../../app/colors/app_colors.dart';
+import '../../app/spacing/app_spacing.dart';
 
 final Map<int, bool> _colors = {
   const Color(0xFF809BCE).value: false,
@@ -28,7 +30,7 @@ class _ColorPickerState extends State<ColorPicker> {
     return SizedBox(
       height: 75,
       child: ListView.separated(
-        separatorBuilder: (_, __) => const SizedBox(width: 20),
+        separatorBuilder: (_, __) => SizedBox(width: AppSpacing.xlg),
         scrollDirection: Axis.horizontal,
         itemCount: _colors.length,
         itemBuilder: (

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habit_tracker/habit/widgets/color_picker.dart';
+
+import '../../app/spacing/app_spacing.dart';
+import '../widgets/color_picker.dart';
 
 class HabitView extends StatelessWidget {
   const HabitView({super.key});
@@ -12,7 +14,7 @@ class HabitView extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
             _NameTextInput(),

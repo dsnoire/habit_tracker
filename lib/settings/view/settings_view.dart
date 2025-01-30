@@ -1,9 +1,10 @@
 import 'package:database_client/database_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habit_tracker/app/bloc/app_bloc.dart';
+import '../../app/bloc/app_bloc.dart';
 
 import '../../app/colors/app_colors.dart';
+import '../../app/spacing/app_spacing.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -16,7 +17,7 @@ class SettingsView extends StatelessWidget {
         title: Text('Settings'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           spacing: 16,
           children: [

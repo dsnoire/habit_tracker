@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habit_tracker/register/bloc/register_bloc.dart';
 
 import '../../app/colors/app_colors.dart';
+import '../../app/spacing/app_spacing.dart';
+import '../bloc/register_bloc.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
@@ -35,13 +36,13 @@ class RegisterForm extends StatelessWidget {
                 _RegisterHeader(),
                 const Spacer(),
                 _EmailTextInput(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.mlg),
                 _PasswordTextInput(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.mlg),
                 _ConfirmPasswordTextInput(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.mlg),
                 _RegisterButton(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.mlg),
                 _NavigateToLoginButton(),
               ],
             ),
@@ -153,7 +154,7 @@ class _RegisterHeader extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: AppSpacing.xxlg),
         SvgPicture.asset(
           'assets/images/auth.svg',
           height: 220,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habit_tracker/navigation/widgets/bottom_nav_bar.dart';
+import '../widgets/bottom_nav_bar.dart';
 
 class NavigationRoot extends StatelessWidget {
   final StatefulNavigationShell navigationShell;

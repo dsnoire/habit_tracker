@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/colors/app_colors.dart';
+import '../../app/spacing/app_spacing.dart';
 
 class HorizontalDatePicker extends StatefulWidget {
   const HorizontalDatePicker({super.key});
@@ -93,7 +94,7 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
                       fontWeight: isToday ? FontWeight.w500 : FontWeight.w300,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: AppSpacing.xs),
                   Text(
                     '${date.day}', // Day of the month (1, 2, 3)
                     style: TextStyle(

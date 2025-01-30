@@ -1,12 +1,11 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:habit_tracker/app/router/app_router.dart';
-import 'package:habit_tracker/app/theme/app_theme.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../bloc/app_bloc.dart';
+import '../router/app_router.dart';
+import '../theme/app_theme.dart';
 
 class App extends StatelessWidget {
   const App({

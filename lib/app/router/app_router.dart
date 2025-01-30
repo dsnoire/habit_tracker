@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habit_tracker/habit/view/habit_page.dart';
-import 'package:habit_tracker/register/view/register_page.dart';
 
+import '../../habit/view/habit_page.dart';
 import '../../home/view/home_page.dart';
 import '../../login/view/login_page.dart';
 import '../../navigation/view/navigation.dart';
+import '../../register/view/register_page.dart';
 import '../../settings/view/settings_page.dart';
 import '../../statistics/view/statistics_page.dart';
 import '../bloc/app_bloc.dart';
