@@ -1,6 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_repository/habit_repository.dart';
+import 'package:habit_tracker/habit/bloc/habit_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../bloc/app_bloc.dart';
@@ -12,11 +14,14 @@ class App extends StatelessWidget {
     super.key,
     required AuthenticationRepository authenticationRepository,
     required UserRepository userRepository,
+    required HabitRepository habitRepository,
   })  : _authenticationRepository = authenticationRepository,
-        _userRepository = userRepository;
+        _userRepository = userRepository,
+        _habitRepository = habitRepository;
 
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
+  final HabitRepository _habitRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +29,21 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider.value(value: _authenticationRepository),
         RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _habitRepository),
       ],
-      child: BlocProvider(
-        lazy: false,
-        create: (context) => AppBloc(
-          _userRepository,
-          _authenticationRepository,
-        )..add(AppUserSubscriptionRequested()),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            lazy: false,
+            create: (context) => AppBloc(
+              _userRepository,
+              _authenticationRepository,
+            )..add(AppUserSubscriptionRequested()),
+          ),
+          BlocProvider(
+            create: (context) => HabitBloc(_habitRepository),
+          ),
+        ],
         child: AppView(),
       ),
     );

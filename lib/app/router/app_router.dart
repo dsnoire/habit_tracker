@@ -99,7 +99,7 @@ class AppRouter {
           final isAuthenticating = state.matchedLocation == '/login' || state.matchedLocation == '/register';
 
           if (isInHome && !isAuthenticated) return '/login';
-          if (!isAuthenticated) return '/login';
+          if (!isAuthenticated && !isAuthenticating) return '/login';
           if (isAuthenticating && isAuthenticated) return '/home';
           return null;
         },

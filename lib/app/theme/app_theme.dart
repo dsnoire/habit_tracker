@@ -12,7 +12,7 @@ class AppTheme {
       onSecondary: AppColors.white,
       tertiary: Colors.blue,
       onTertiary: Colors.yellow,
-      surface: AppColors.darkGrey,
+      surface: AppColors.surfaceGrey,
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: AppColors.background,
