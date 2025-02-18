@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
+import '../bloc/habit_bloc.dart';
 
 class SchedulePicker extends StatelessWidget {
   const SchedulePicker({super.key});
@@ -30,6 +33,8 @@ class SchedulePicker extends StatelessWidget {
 class _StartDateTimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final color = context.select((HabitBloc bloc) => bloc.state.color);
+    final date = context.select((HabitBloc bloc) => bloc.state.startDate);
     return ElevatedButton(
       onPressed: () async {
         final pickedDate = await showDatePicker(
@@ -37,11 +42,19 @@ class _StartDateTimePicker extends StatelessWidget {
           firstDate: DateTime(DateTime.now().year),
           lastDate: DateTime(2100),
           initialEntryMode: DatePickerEntryMode.calendarOnly,
+          builder: (context, child) {
+            return Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: ColorScheme.dark(
+                    primary: color,
+                  ),
+                ),
+                child: child!);
+          },
         );
 
         if (pickedDate != null) {
-          /// todo: bloc method
-          print(pickedDate);
+          context.read<HabitBloc>().add(HabitStartDateChanged(pickedDate));
         }
       },
       child: Row(
@@ -49,7 +62,7 @@ class _StartDateTimePicker extends StatelessWidget {
         children: [
           Text('Start'),
           Text(
-            '1 February',
+            DateFormat('MMM d yyyy').format(date),
             style: TextStyle(
               color: AppColors.grey,
             ),
@@ -63,6 +76,8 @@ class _StartDateTimePicker extends StatelessWidget {
 class _EndDateTimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final color = context.select((HabitBloc bloc) => bloc.state.color);
+    final date = context.select((HabitBloc bloc) => bloc.state.endDate);
     return ElevatedButton(
       onPressed: () async {
         final pickedDate = await showDatePicker(
@@ -70,11 +85,19 @@ class _EndDateTimePicker extends StatelessWidget {
           firstDate: DateTime(DateTime.now().year),
           lastDate: DateTime(2100),
           initialEntryMode: DatePickerEntryMode.calendarOnly,
+          builder: (context, child) {
+            return Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: ColorScheme.dark(
+                    primary: color,
+                  ),
+                ),
+                child: child!);
+          },
         );
 
         if (pickedDate != null) {
-          /// todo: bloc method
-          print(pickedDate);
+          context.read<HabitBloc>().add(HabitEndDateChanged(pickedDate));
         }
       },
       child: Row(
@@ -82,7 +105,7 @@ class _EndDateTimePicker extends StatelessWidget {
         children: [
           Text('End'),
           Text(
-            'Never',
+            date != null ? DateFormat('MMM d yyyy').format(date) : 'Never',
             style: TextStyle(
               color: AppColors.grey,
             ),

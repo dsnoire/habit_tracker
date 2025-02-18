@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
+import '../bloc/habit_bloc.dart';
 
-final Map<int, bool> _colors = {
-  const Color(0xFF809BCE).value: false,
-  const Color(0xFF95B8D1).value: false,
-  const Color(0xFFFEC89A).value: false,
-  const Color(0xFFFFD7BA).value: false,
-  const Color(0xFFFF7477).value: false,
-  const Color(0xFFECE4DB).value: false,
-  const Color(0xFFD8E2DC).value: false,
-  const Color(0xFFE8E8E4).value: false,
-  const Color(0xFFF8EDEB).value: false,
-  const Color(0xFFFAE1DD).value: false,
-  const Color(0xFFFCD5CE).value: false,
-};
-
-class ColorPicker extends StatefulWidget {
-  const ColorPicker({super.key});
-
-  @override
-  State<ColorPicker> createState() => _ColorPickerState();
+abstract class HabitColors {
+  static List<Color> colors = const [
+    Color(0xFF809BCE),
+    Color(0xFF95B8D1),
+    Color(0xFFFEC89A),
+    Color(0xFFFFD7BA),
+    Color(0xFFFF7477),
+    Color(0xFFECE4DB),
+    Color(0xFFD8E2DC),
+    Color(0xFFE8E8E4),
+    Color(0xFFF8EDEB),
+    Color(0xFFFAE1DD),
+    Color(0xFFFCD5CE),
+  ];
+  static Color defaultColor = colors.first;
 }
 
-class _ColorPickerState extends State<ColorPicker> {
+class ColorPicker extends StatelessWidget {
+  const ColorPicker({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -32,40 +32,39 @@ class _ColorPickerState extends State<ColorPicker> {
       child: ListView.separated(
         separatorBuilder: (_, __) => SizedBox(width: AppSpacing.xlg),
         scrollDirection: Axis.horizontal,
-        itemCount: _colors.length,
+        itemCount: HabitColors.colors.length,
         itemBuilder: (
           BuildContext context,
           int index,
         ) {
-          final selectedColor = _colors.keys.elementAt(index);
-          final isSelected = _colors.values.elementAt(index) == true;
-          return GestureDetector(
-            onTap: () {
-              setState(
-                () {
-                  _colors.updateAll(
-                    (key, value) {
-                      if (key == selectedColor) {
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    },
-                  );
-                },
-              );
-            },
-            child: CircleAvatar(
-              backgroundColor: Color(selectedColor),
-              child: isSelected
-                  ? Icon(
-                      Icons.check,
-                      color: AppColors.white,
-                    )
-                  : null,
-            ),
-          );
+          final color = HabitColors.colors[index];
+          return _ColorPickerItem(color: color);
         },
+      ),
+    );
+  }
+}
+
+class _ColorPickerItem extends StatelessWidget {
+  const _ColorPickerItem({required this.color});
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected =
+        context.select((HabitBloc bloc) => bloc.state.color) == color;
+
+    return GestureDetector(
+      onTap: () => context.read<HabitBloc>().add(HabitColorChanged(color)),
+      child: CircleAvatar(
+        backgroundColor: color,
+        child: isSelected
+            ? Icon(
+                Icons.check,
+                color: AppColors.background,
+                size: 26,
+              )
+            : null,
       ),
     );
   }

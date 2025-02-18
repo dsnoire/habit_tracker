@@ -9,7 +9,8 @@ class DatabaseFailure implements Exception {
   factory DatabaseFailure.fromCode(String code) {
     switch (code) {
       case 'permission-denied':
-        return DatabaseFailure('You do not have permission to perform this operation.');
+        return DatabaseFailure(
+            'You do not have permission to perform this operation.');
       case 'unavailable':
         return DatabaseFailure('The service is currently unavailable.');
       case 'not-found':
@@ -19,7 +20,8 @@ class DatabaseFailure implements Exception {
       case 'aborted':
         return DatabaseFailure('The operation was aborted. Please try again.');
       case 'network-request-failed':
-        return DatabaseFailure('Network request error. Please check your internet connection.');
+        return DatabaseFailure(
+            'Network request error. Please check your internet connection.');
       default:
         return DatabaseFailure();
     }
@@ -53,7 +55,14 @@ class DatabaseClient {
 
   Future<void> addHabit(Habit habit) async {
     try {
-      await _firestore.collection('users').doc(_userId).collection('habits').add(habit.toJson());
+      final docRef = _firestore
+          .collection('users')
+          .doc(_userId)
+          .collection('habits')
+          .doc();
+      final habitWithId = habit.copyWith(id: docRef.id);
+
+      await docRef.set(habitWithId.toJson());
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
@@ -63,7 +72,12 @@ class DatabaseClient {
 
   Future<void> removeHabit(String habitId) async {
     try {
-      await _firestore.collection('users').doc(_userId).collection('habits').doc(habitId).delete();
+      await _firestore
+          .collection('users')
+          .doc(_userId)
+          .collection('habits')
+          .doc(habitId)
+          .delete();
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
@@ -73,7 +87,12 @@ class DatabaseClient {
 
   Future<void> editHabit(String habitId, Habit updatedHabit) async {
     try {
-      await _firestore.collection('users').doc(_userId).collection('habits').doc(habitId).update(updatedHabit.toJson());
+      await _firestore
+          .collection('users')
+          .doc(_userId)
+          .collection('habits')
+          .doc(habitId)
+          .update(updatedHabit.toJson());
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
@@ -83,7 +102,11 @@ class DatabaseClient {
 
   Future<List<Habit>> getAllHabits() async {
     try {
-      final snapshot = await _firestore.collection('users').doc(_userId).collection('habits').get();
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(_userId)
+          .collection('habits')
+          .get();
       return snapshot.docs.map((doc) => Habit.fromJson(doc.data())).toList();
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
