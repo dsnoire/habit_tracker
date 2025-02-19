@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../habit/view/habit_page.dart';
+import '../../habit_form/view/habit_page.dart';
 import '../../home/view/home_page.dart';
 import '../../login/view/login_page.dart';
 import '../../navigation/view/navigation.dart';
@@ -94,9 +94,11 @@ class AppRouter {
           ),
         ],
         redirect: (context, state) {
-          final isAuthenticated = _appBloc.state.status == AppStatus.authenticated;
+          final isAuthenticated =
+              _appBloc.state.status == AppStatus.authenticated;
           final isInHome = state.matchedLocation == '/home';
-          final isAuthenticating = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+          final isAuthenticating = state.matchedLocation == '/login' ||
+              state.matchedLocation == '/register';
 
           if (isInHome && !isAuthenticated) return '/login';
           if (!isAuthenticated && !isAuthenticating) return '/login';

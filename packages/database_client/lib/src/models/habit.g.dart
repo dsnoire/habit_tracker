@@ -10,9 +10,9 @@ Habit _$HabitFromJson(Map<String, dynamic> json) => Habit(
       id: json['id'] as String,
       name: json['name'] as String,
       color: (json['color'] as num).toInt(),
-      selectedWeekdays: (json['selectedWeekdays'] as List<dynamic>)
-          .map((e) => e as String)
-          .toSet(),
+      icon: json['icon'] as String,
+      weekdays:
+          (json['weekdays'] as List<dynamic>).map((e) => e as String).toSet(),
       startDate: DateTime.parse(json['startDate'] as String),
       endDate: json['endDate'] == null
           ? null
@@ -23,7 +23,8 @@ Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'color': instance.color,
-      'selectedWeekdays': instance.selectedWeekdays.toList(),
+      'icon': instance.icon,
+      'weekdays': instance.weekdays.toList(),
       'startDate': instance.startDate.toIso8601String(),
       'endDate': instance.endDate?.toIso8601String(),
     };

@@ -9,7 +9,8 @@ class Habit extends Equatable {
     required this.id,
     required this.name,
     required this.color,
-    required this.selectedWeekdays,
+    required this.icon,
+    required this.weekdays,
     required this.startDate,
     this.endDate,
   });
@@ -17,7 +18,8 @@ class Habit extends Equatable {
   final String id;
   final String name;
   final int color;
-  final Set<String> selectedWeekdays;
+  final String icon;
+  final Set<String> weekdays;
   final DateTime startDate;
   final DateTime? endDate;
 
@@ -25,7 +27,8 @@ class Habit extends Equatable {
     String? id,
     String? name,
     int? color,
-    Set<String>? selectedWeekdays,
+    String? icon,
+    Set<String>? weekdays,
     DateTime? startDate,
     DateTime? endDate,
   }) {
@@ -33,7 +36,8 @@ class Habit extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       color: color ?? this.color,
-      selectedWeekdays: selectedWeekdays ?? this.selectedWeekdays,
+      icon: icon ?? this.icon,
+      weekdays: weekdays ?? this.weekdays,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
     );
@@ -48,7 +52,8 @@ class Habit extends Equatable {
         id,
         name,
         color,
-        selectedWeekdays,
+        icon,
+        weekdays,
         startDate,
         endDate,
       ];

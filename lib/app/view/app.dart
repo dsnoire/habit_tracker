@@ -2,7 +2,6 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_repository/habit_repository.dart';
-import 'package:habit_tracker/habit/bloc/habit_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../bloc/app_bloc.dart';
@@ -39,9 +38,6 @@ class App extends StatelessWidget {
               _userRepository,
               _authenticationRepository,
             )..add(AppUserSubscriptionRequested()),
-          ),
-          BlocProvider(
-            create: (context) => HabitBloc(_habitRepository),
           ),
         ],
         child: AppView(),

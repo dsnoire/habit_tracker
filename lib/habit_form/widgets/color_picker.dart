@@ -7,17 +7,19 @@ import '../bloc/habit_bloc.dart';
 
 abstract class HabitColors {
   static List<Color> colors = const [
+    Color(0xFFF8EDEB),
+    Color(0xFFFFD7BA),
+    Color(0xFF815AC0),
     Color(0xFF809BCE),
     Color(0xFF95B8D1),
     Color(0xFFFEC89A),
-    Color(0xFFFFD7BA),
     Color(0xFFFF7477),
     Color(0xFFECE4DB),
-    Color(0xFFD8E2DC),
-    Color(0xFFE8E8E4),
-    Color(0xFFF8EDEB),
-    Color(0xFFFAE1DD),
+    Color(0xFF52B788),
+    Color(0xFFCC59D2),
+    Color(0xFF80B918),
     Color(0xFFFCD5CE),
+    Color(0xFFFB6107),
   ];
   static Color defaultColor = colors.first;
 }

@@ -12,33 +12,33 @@ abstract class HabitIcons {
     Icons.book,
     Icons.extension_sharp,
     Icons.build,
-    Icons.fitness_center, // for training// for chess
-    Icons.music_note, // for music
-    Icons.sports_gymnastics, // for gymnastics
-    Icons.directions_run, // for running
-    Icons.sports_basketball, // for basketball
-    Icons.access_alarm, // for time management
-    Icons.camera, // for photography
-    Icons.art_track, // for painting/art
-    Icons.laptop, // for programming
-    Icons.brush, // for design
-    Icons.coffee, // for coffee time
-    Icons.travel_explore, // for traveling
-    Icons.group, // for social activities
-    Icons.shopping_cart, // for shopping
-    Icons.restaurant, // for cooking or dining
-    Icons.lightbulb, // for ideas/inspiration
-    Icons.headset, // for gaming or music listening
-    Icons.watch_later, // for time management
-    Icons.work, // for work/business
-    Icons.sports_football, // for football
-    Icons.pool, // for swimming
-    Icons.local_activity, // for outdoor activities
-    Icons.pets, // for pet care
-    Icons.lunch_dining, // for food-related hobbies// for mindfulness/meditation
-    Icons.volunteer_activism, // for volunteering
-    Icons.museum, // for visiting museums
-    Icons.stadium, // for attending sports events
+    Icons.fitness_center,
+    Icons.music_note,
+    Icons.sports_gymnastics,
+    Icons.directions_run,
+    Icons.sports_basketball,
+    Icons.access_alarm,
+    Icons.camera,
+    Icons.art_track,
+    Icons.laptop,
+    Icons.brush,
+    Icons.coffee,
+    Icons.travel_explore,
+    Icons.group,
+    Icons.shopping_cart,
+    Icons.restaurant,
+    Icons.lightbulb,
+    Icons.headset,
+    Icons.watch_later,
+    Icons.work,
+    Icons.sports_football,
+    Icons.pool,
+    Icons.local_activity,
+    Icons.pets,
+    Icons.lunch_dining,
+    Icons.volunteer_activism,
+    Icons.museum,
+    Icons.stadium,
   ];
   static IconData defaultIcon = icons.first;
 }
@@ -66,10 +66,13 @@ class IconPicker extends StatelessWidget {
             context: context,
             backgroundColor: AppColors.background,
             isScrollControlled: true,
-            builder: (context) {
+            builder: (modalContext) {
               final height =
                   MediaQuery.of(context).size.height - kToolbarHeight - 24;
-              return _IconsBottomSheet(height: height);
+              return BlocProvider.value(
+                value: BlocProvider.of<HabitBloc>(context),
+                child: _IconsBottomSheet(height: height),
+              );
             },
           ),
           tileColor: AppColors.surfaceGrey,
@@ -106,17 +109,18 @@ class _IconsBottomSheet extends StatelessWidget {
             spacing: AppSpacing.mlg,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    onPressed: () => context.pop(),
-                    icon: Icon(Icons.close),
-                  ),
                   Text(
                     'Choose icon',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () => context.pop(),
+                    icon: Icon(Icons.close),
                   ),
                 ],
               ),

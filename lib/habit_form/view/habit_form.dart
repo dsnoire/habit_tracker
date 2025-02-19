@@ -15,32 +15,24 @@ class HabitForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (didPop, _) {
-        if (didPop) {
-          context.read<HabitBloc>().add(HabitFormResetted());
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('New Habit'),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            spacing: AppSpacing.xlg,
-            children: [
-              _NameTextInput(),
-              ColorPicker(),
-              IconPicker(),
-              WeekdaysPicker(),
-              SchedulePicker(),
-              Spacer(),
-              _DoneButton(),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New Habit'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          spacing: AppSpacing.xlg,
+          children: [
+            _NameTextInput(),
+            ColorPicker(),
+            IconPicker(),
+            WeekdaysPicker(),
+            SchedulePicker(),
+            Spacer(),
+            _DoneButton(),
+          ],
         ),
       ),
     );

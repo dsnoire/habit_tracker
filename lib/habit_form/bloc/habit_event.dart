@@ -56,5 +56,3 @@ class HabitEndDateChanged extends HabitEvent {
 }
 
 class HabitFormSubmitted extends HabitEvent {}
-
-class HabitFormResetted extends HabitEvent {}

@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 import 'package:habit_repository/habit_repository.dart';
-import 'package:habit_tracker/habit/widgets/color_picker.dart';
-import 'package:habit_tracker/habit/widgets/icon_picker.dart';
+import 'package:habit_tracker/habit_form/widgets/color_picker.dart';
+import 'package:habit_tracker/habit_form/widgets/icon_picker.dart';
 
 part 'habit_event.dart';
 part 'habit_state.dart';
@@ -20,17 +20,9 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
     on<HabitWeekdayToggled>(_onWeekdayToggled);
     on<HabitStartDateChanged>(_onStartDateChanged);
     on<HabitEndDateChanged>(_onEndDateChanged);
-    on<HabitFormResetted>(_onHabitFormResetted);
   }
 
   final HabitRepository _habitRepository;
-
-  void _onHabitFormResetted(
-    HabitFormResetted event,
-    Emitter<HabitState> emit,
-  ) {
-    emit(HabitState());
-  }
 
   void _onNameChanged(
     HabitNameChanged event,
@@ -101,7 +93,8 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
           id: '',
           name: state.name.value,
           color: state.color.value,
-          selectedWeekdays: state.weekdays,
+          icon: state.icon.toString(),
+          weekdays: state.weekdays,
           startDate: state.startDate,
           endDate: state.endDate,
         ),
