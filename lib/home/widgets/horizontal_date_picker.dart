@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_tracker/habits_overview/bloc/habits_overview_bloc.dart';
@@ -90,8 +92,8 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
               final selectedWeekday =
                   DateFormat('EEEE').format(date); // "Monday", "Tuesday", etc.
 
-              print("Selected Day: $selectedWeekday");
-              print(date);
+              log("Selected Day: $selectedWeekday");
+              log('$date');
               context
                   .read<HabitsOverviewBloc>()
                   .add(HabitsOverviewByDateRequested(

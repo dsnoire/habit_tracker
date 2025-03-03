@@ -19,14 +19,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   final UserRepository _userRepository;
   final AuthenticationRepository _authenticationRepository;
 
-  Future<void> _onAppUserSubscriptionRequested(AppUserSubscriptionRequested event, Emitter<AppState> emit) {
+  Future<void> _onAppUserSubscriptionRequested(
+      AppUserSubscriptionRequested event, Emitter<AppState> emit) {
     return emit.onEach(
       _userRepository.userStream,
       onData: (user) {
         emit(
           AppState(user: user),
         );
-        print(user);
       },
       onError: addError,
     );
