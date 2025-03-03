@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
-import '../bloc/habit_bloc.dart';
+import '../bloc/habit_form_bloc.dart';
 
 abstract class HabitColors {
   static List<Color> colors = const [
@@ -54,10 +54,10 @@ class _ColorPickerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSelected =
-        context.select((HabitBloc bloc) => bloc.state.color) == color;
+        context.select((HabitFormBloc bloc) => bloc.state.color) == color;
 
     return GestureDetector(
-      onTap: () => context.read<HabitBloc>().add(HabitColorChanged(color)),
+      onTap: () => context.read<HabitFormBloc>().add(HabitColorChanged(color)),
       child: CircleAvatar(
         backgroundColor: color,
         child: isSelected

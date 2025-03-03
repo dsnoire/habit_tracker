@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_tracker/habits_overview/bloc/habits_overview_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/colors/app_colors.dart';
@@ -29,6 +31,11 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
         now.year,
         now.month,
         index + 1,
+        now.hour,
+        now.minute,
+        now.second,
+        now.millisecond,
+        now.microsecond,
       ),
     );
 
@@ -38,6 +45,12 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToSelectedDay();
     });
+
+    final weekday = DateFormat('EEEE').format(now);
+
+    context
+        .read<HabitsOverviewBloc>()
+        .add(HabitsOverviewByDateRequested(weekday, now));
   }
 
   void _scrollToSelectedDay() {
@@ -57,8 +70,7 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 16),
+    return SizedBox(
       height: 60,
       child: ListView.separated(
         separatorBuilder: (_, __) => const SizedBox(width: 6),
@@ -75,12 +87,23 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
               setState(() {
                 selectedIndex = index;
               });
-              print("Selected: ${date.day}");
+              final selectedWeekday =
+                  DateFormat('EEEE').format(date); // "Monday", "Tuesday", etc.
+
+              print("Selected Day: $selectedWeekday");
+              print(date);
+              context
+                  .read<HabitsOverviewBloc>()
+                  .add(HabitsOverviewByDateRequested(
+                    selectedWeekday,
+                    date,
+                  ));
             },
             child: Container(
               width: 50,
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.surfaceGrey : AppColors.background,
+                color:
+                    isSelected ? AppColors.surfaceGrey : AppColors.background,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(

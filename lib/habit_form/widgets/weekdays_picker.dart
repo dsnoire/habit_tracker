@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
-import '../bloc/habit_bloc.dart';
+import '../bloc/habit_form_bloc.dart';
 
 class WeekdaysPicker extends StatelessWidget {
   const WeekdaysPicker({super.key});
@@ -30,9 +30,9 @@ class WeekdaysPicker extends StatelessWidget {
 class _WeekdayTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final color = context.select((HabitBloc bloc) => bloc.state.color);
+    final color = context.select((HabitFormBloc bloc) => bloc.state.color);
     final selectedWeekdays =
-        context.select((HabitBloc bloc) => bloc.state.weekdays);
+        context.select((HabitFormBloc bloc) => bloc.state.weekdays);
     final weekdays = [
       'Monday',
       'Tuesday',
@@ -52,7 +52,7 @@ class _WeekdayTile extends StatelessWidget {
           return Expanded(
             child: GestureDetector(
               onTap: () {
-                context.read<HabitBloc>().add(HabitWeekdayToggled(weekday));
+                context.read<HabitFormBloc>().add(HabitWeekdayToggled(weekday));
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: AppSpacing.xs),

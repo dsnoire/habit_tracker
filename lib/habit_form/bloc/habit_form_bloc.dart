@@ -5,14 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 import 'package:habit_repository/habit_repository.dart';
-import 'package:habit_tracker/habit_form/widgets/color_picker.dart';
-import 'package:habit_tracker/habit_form/widgets/icon_picker.dart';
 
-part 'habit_event.dart';
-part 'habit_state.dart';
+import '../widgets/color_picker.dart';
+import '../widgets/icon_picker.dart';
 
-class HabitBloc extends Bloc<HabitEvent, HabitState> {
-  HabitBloc(this._habitRepository) : super(HabitState()) {
+part 'habit_form_event.dart';
+part 'habit_form_state.dart';
+
+class HabitFormBloc extends Bloc<HabitFormEvent, HabitFormState> {
+  HabitFormBloc(this._habitRepository) : super(HabitFormState()) {
     on<HabitNameChanged>(_onNameChanged);
     on<HabitFormSubmitted>(_onHabitFormSubmitted);
     on<HabitColorChanged>(_onColorChanged);
@@ -26,7 +27,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
 
   void _onNameChanged(
     HabitNameChanged event,
-    Emitter<HabitState> emit,
+    Emitter<HabitFormState> emit,
   ) {
     final name = HabitName.dirty(event.name);
     emit(
@@ -41,21 +42,21 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
 
   void _onColorChanged(
     HabitColorChanged event,
-    Emitter<HabitState> emit,
+    Emitter<HabitFormState> emit,
   ) {
     emit(state.copyWith(color: event.color));
   }
 
   void _onIconChanged(
     HabitIconChanged event,
-    Emitter<HabitState> emit,
+    Emitter<HabitFormState> emit,
   ) {
     emit(state.copyWith(icon: event.icon));
   }
 
   void _onWeekdayToggled(
     HabitWeekdayToggled event,
-    Emitter<HabitState> emit,
+    Emitter<HabitFormState> emit,
   ) {
     final updatedWeekdays = Set<String>.from(state.weekdays);
     final weekday = event.weekday;
@@ -69,21 +70,21 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
 
   void _onStartDateChanged(
     HabitStartDateChanged event,
-    Emitter<HabitState> emit,
+    Emitter<HabitFormState> emit,
   ) {
     emit(state.copyWith(startDate: event.date));
   }
 
   void _onEndDateChanged(
     HabitEndDateChanged event,
-    Emitter<HabitState> emit,
+    Emitter<HabitFormState> emit,
   ) {
     emit(state.copyWith(endDate: event.date));
   }
 
   Future<void> _onHabitFormSubmitted(
-    HabitEvent event,
-    Emitter<HabitState> emit,
+    HabitFormEvent event,
+    Emitter<HabitFormState> emit,
   ) async {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
@@ -93,7 +94,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
           id: '',
           name: state.name.value,
           color: state.color.value,
-          icon: state.icon.toString(),
+          icon: state.icon.codePoint,
           weekdays: state.weekdays,
           startDate: state.startDate,
           endDate: state.endDate,

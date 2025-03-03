@@ -28,7 +28,8 @@ class LoginForm extends StatelessWidget {
       },
       child: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 70),
+          constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 70),
           child: IntrinsicHeight(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -36,11 +37,11 @@ class LoginForm extends StatelessWidget {
                 _LoginHeader(),
                 const Spacer(),
                 _EmailTextInput(),
-                const SizedBox(height: AppSpacing.mlg),
+                const SizedBox(height: AppSpacing.xxlg),
                 _PasswordTextInput(),
-                const SizedBox(height: AppSpacing.mlg),
+                const SizedBox(height: AppSpacing.xxlg),
                 _LoginButton(),
-                const SizedBox(height: AppSpacing.mlg),
+                const SizedBox(height: AppSpacing.xxlg),
                 _NavigateToRegisterButton(),
               ],
             ),
@@ -54,9 +55,11 @@ class LoginForm extends StatelessWidget {
 class _EmailTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((LoginBloc bloc) => bloc.state.email.displayError);
+    final displayError =
+        context.select((LoginBloc bloc) => bloc.state.email.displayError);
     return TextField(
-      onChanged: (value) => context.read<LoginBloc>().add(LoginEmailChanged(value)),
+      onChanged: (value) =>
+          context.read<LoginBloc>().add(LoginEmailChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.email_outlined),
         labelText: 'E-mail',
@@ -70,9 +73,11 @@ class _EmailTextInput extends StatelessWidget {
 class _PasswordTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((LoginBloc bloc) => bloc.state.password.displayError);
+    final displayError =
+        context.select((LoginBloc bloc) => bloc.state.password.displayError);
     return TextField(
-      onChanged: (value) => context.read<LoginBloc>().add(LoginPasswordChanged(value)),
+      onChanged: (value) =>
+          context.read<LoginBloc>().add(LoginPasswordChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.lock_open_rounded),
         labelText: 'Password',
@@ -86,14 +91,17 @@ class _PasswordTextInput extends StatelessWidget {
 class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isInProgress = context.select((LoginBloc bloc) => bloc.state.status.isInProgress);
+    final isInProgress =
+        context.select((LoginBloc bloc) => bloc.state.status.isInProgress);
 
     if (isInProgress) return const CircularProgressIndicator();
 
     final isValid = context.select((LoginBloc bloc) => bloc.state.isValid);
 
     return ElevatedButton(
-      onPressed: isValid ? () => context.read<LoginBloc>().add(LoginFormSubmitted()) : null,
+      onPressed: isValid
+          ? () => context.read<LoginBloc>().add(LoginFormSubmitted())
+          : null,
       child: const Text('Login'),
     );
   }
@@ -136,7 +144,7 @@ class _LoginHeader extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: AppSpacing.xxlg),
+        const SizedBox(height: AppSpacing.xxxlg),
         SvgPicture.asset(
           'assets/images/auth.svg',
           height: 220,

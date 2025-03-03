@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
-import '../bloc/habit_bloc.dart';
+import '../bloc/habit_form_bloc.dart';
 
 abstract class HabitIcons {
   static List<IconData> icons = const [
@@ -48,8 +48,9 @@ class IconPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.select((HabitBloc bloc) => bloc.state.color);
-    final selectedIcon = context.select((HabitBloc bloc) => bloc.state.icon);
+    final color = context.select((HabitFormBloc bloc) => bloc.state.color);
+    final selectedIcon =
+        context.select((HabitFormBloc bloc) => bloc.state.icon);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -70,7 +71,7 @@ class IconPicker extends StatelessWidget {
               final height =
                   MediaQuery.of(context).size.height - kToolbarHeight - 24;
               return BlocProvider.value(
-                value: BlocProvider.of<HabitBloc>(context),
+                value: BlocProvider.of<HabitFormBloc>(context),
                 child: _IconsBottomSheet(height: height),
               );
             },
@@ -106,7 +107,7 @@ class _IconsBottomSheet extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
-            spacing: AppSpacing.mlg,
+            spacing: AppSpacing.xxlg,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +162,7 @@ class _IconItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.read<HabitBloc>().add(HabitIconChanged(icon)),
+      onTap: () => context.read<HabitFormBloc>().add(HabitIconChanged(icon)),
       child: CircleAvatar(
         backgroundColor: AppColors.surfaceGrey,
         child: Icon(
@@ -177,8 +178,8 @@ class _IconItem extends StatelessWidget {
 class _SelectedIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final color = context.select((HabitBloc bloc) => bloc.state.color);
-    final icon = context.select((HabitBloc bloc) => bloc.state.icon);
+    final color = context.select((HabitFormBloc bloc) => bloc.state.color);
+    final icon = context.select((HabitFormBloc bloc) => bloc.state.icon);
     return CircleAvatar(
       radius: 45,
       backgroundColor: color,

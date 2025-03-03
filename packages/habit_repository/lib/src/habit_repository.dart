@@ -34,9 +34,25 @@ class HabitRepository {
     }
   }
 
-  Future<List<Habit>> getAllHabits() async {
+  Stream<List<Habit>> getAllHabits() {
     try {
-      return await _databaseClient.getAllHabits();
+      return _databaseClient.getAllHabits();
+    } on DatabaseFailure {
+      rethrow;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Stream<List<Habit>> getHabitsForConcreteDay(
+    String weekday,
+    DateTime selectedDate,
+  ) {
+    try {
+      return _databaseClient.getHabitsForConcreteDay(
+        weekday,
+        selectedDate,
+      );
     } on DatabaseFailure {
       rethrow;
     } catch (_) {

@@ -4,7 +4,7 @@ import 'package:formz/formz.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
-import '../bloc/habit_bloc.dart';
+import '../bloc/habit_form_bloc.dart';
 import '../widgets/color_picker.dart';
 import '../widgets/icon_picker.dart';
 import '../widgets/schedule_picker.dart';
@@ -43,10 +43,10 @@ class _NameTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayError =
-        context.select((HabitBloc bloc) => bloc.state.name.displayError);
+        context.select((HabitFormBloc bloc) => bloc.state.name.displayError);
     return TextField(
       onChanged: (value) =>
-          context.read<HabitBloc>().add(HabitNameChanged(value)),
+          context.read<HabitFormBloc>().add(HabitNameChanged(value)),
       decoration: InputDecoration(
         labelText: 'Name',
         errorText: displayError != null ? 'Name cannot be empty' : null,
@@ -59,17 +59,17 @@ class _DoneButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isInProgress =
-        context.select((HabitBloc bloc) => bloc.state.status.isInProgress);
+        context.select((HabitFormBloc bloc) => bloc.state.status.isInProgress);
 
     if (isInProgress) return CircularProgressIndicator();
 
-    final isValid = context.select((HabitBloc bloc) => bloc.state.isValid);
+    final isValid = context.select((HabitFormBloc bloc) => bloc.state.isValid);
 
-    final color = context.select((HabitBloc bloc) => bloc.state.color);
+    final color = context.select((HabitFormBloc bloc) => bloc.state.color);
 
     return ElevatedButton(
       onPressed: isValid
-          ? () => context.read<HabitBloc>().add(HabitFormSubmitted())
+          ? () => context.read<HabitFormBloc>().add(HabitFormSubmitted())
           : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,

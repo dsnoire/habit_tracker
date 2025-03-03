@@ -1,7 +1,7 @@
-part of 'habit_bloc.dart';
+part of 'habit_form_bloc.dart';
 
-class HabitState extends Equatable {
-  HabitState({
+final class HabitFormState extends Equatable {
+  HabitFormState({
     this.name = const HabitName.pure(),
     Color? color,
     IconData? icon,
@@ -37,7 +37,7 @@ class HabitState extends Equatable {
         errorMessage,
       ];
 
-  HabitState copyWith({
+  HabitFormState copyWith({
     HabitName? name,
     Color? color,
     IconData? icon,
@@ -48,7 +48,7 @@ class HabitState extends Equatable {
     bool? isValid,
     String? errorMessage,
   }) {
-    return HabitState(
+    return HabitFormState(
       name: name ?? this.name,
       color: color ?? this.color,
       icon: icon ?? this.icon,

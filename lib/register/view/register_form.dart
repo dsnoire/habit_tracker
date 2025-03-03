@@ -28,7 +28,8 @@ class RegisterForm extends StatelessWidget {
       },
       child: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 70),
+          constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 70),
           child: IntrinsicHeight(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -36,13 +37,13 @@ class RegisterForm extends StatelessWidget {
                 _RegisterHeader(),
                 const Spacer(),
                 _EmailTextInput(),
-                const SizedBox(height: AppSpacing.mlg),
+                const SizedBox(height: AppSpacing.xxlg),
                 _PasswordTextInput(),
-                const SizedBox(height: AppSpacing.mlg),
+                const SizedBox(height: AppSpacing.xxlg),
                 _ConfirmPasswordTextInput(),
-                const SizedBox(height: AppSpacing.mlg),
+                const SizedBox(height: AppSpacing.xxlg),
                 _RegisterButton(),
-                const SizedBox(height: AppSpacing.mlg),
+                const SizedBox(height: AppSpacing.xxlg),
                 _NavigateToLoginButton(),
               ],
             ),
@@ -56,9 +57,11 @@ class RegisterForm extends StatelessWidget {
 class _EmailTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((RegisterBloc bloc) => bloc.state.email.displayError);
+    final displayError =
+        context.select((RegisterBloc bloc) => bloc.state.email.displayError);
     return TextField(
-      onChanged: (value) => context.read<RegisterBloc>().add(RegisterEmailChanged(value)),
+      onChanged: (value) =>
+          context.read<RegisterBloc>().add(RegisterEmailChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.email_outlined),
         labelText: 'E-mail',
@@ -72,9 +75,11 @@ class _EmailTextInput extends StatelessWidget {
 class _PasswordTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((RegisterBloc bloc) => bloc.state.password.displayError);
+    final displayError =
+        context.select((RegisterBloc bloc) => bloc.state.password.displayError);
     return TextField(
-      onChanged: (value) => context.read<RegisterBloc>().add(RegisterPasswordChanged(value)),
+      onChanged: (value) =>
+          context.read<RegisterBloc>().add(RegisterPasswordChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.lock_open_rounded),
         labelText: 'Password',
@@ -88,9 +93,12 @@ class _PasswordTextInput extends StatelessWidget {
 class _ConfirmPasswordTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((RegisterBloc bloc) => bloc.state.confirmedPassword.displayError);
+    final displayError = context.select(
+        (RegisterBloc bloc) => bloc.state.confirmedPassword.displayError);
     return TextField(
-      onChanged: (value) => context.read<RegisterBloc>().add(RegisterConfirmedPasswordChanged(value)),
+      onChanged: (value) => context
+          .read<RegisterBloc>()
+          .add(RegisterConfirmedPasswordChanged(value)),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.lock_rounded),
         labelText: 'Confirm password',
@@ -104,14 +112,17 @@ class _ConfirmPasswordTextInput extends StatelessWidget {
 class _RegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isInProgress = context.select((RegisterBloc bloc) => bloc.state.status.isInProgress);
+    final isInProgress =
+        context.select((RegisterBloc bloc) => bloc.state.status.isInProgress);
 
     if (isInProgress) return const CircularProgressIndicator();
 
     final isValid = context.select((RegisterBloc bloc) => bloc.state.isValid);
 
     return ElevatedButton(
-      onPressed: isValid ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted()) : null,
+      onPressed: isValid
+          ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted())
+          : null,
       child: const Text('Register'),
     );
   }
@@ -154,7 +165,7 @@ class _RegisterHeader extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: AppSpacing.xxlg),
+        const SizedBox(height: AppSpacing.xxxlg),
         SvgPicture.asset(
           'assets/images/auth.svg',
           height: 220,

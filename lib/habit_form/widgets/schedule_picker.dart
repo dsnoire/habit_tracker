@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
-import '../bloc/habit_bloc.dart';
+import '../bloc/habit_form_bloc.dart';
 
 class SchedulePicker extends StatelessWidget {
   const SchedulePicker({super.key});
@@ -33,8 +33,8 @@ class SchedulePicker extends StatelessWidget {
 class _StartDateTimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final color = context.select((HabitBloc bloc) => bloc.state.color);
-    final date = context.select((HabitBloc bloc) => bloc.state.startDate);
+    final color = context.select((HabitFormBloc bloc) => bloc.state.color);
+    final date = context.select((HabitFormBloc bloc) => bloc.state.startDate);
     return ElevatedButton(
       onPressed: () async {
         final pickedDate = await showDatePicker(
@@ -53,8 +53,8 @@ class _StartDateTimePicker extends StatelessWidget {
           },
         );
 
-        if (pickedDate != null) {
-          context.read<HabitBloc>().add(HabitStartDateChanged(pickedDate));
+        if (pickedDate != null && context.mounted) {
+          context.read<HabitFormBloc>().add(HabitStartDateChanged(pickedDate));
         }
       },
       child: Row(
@@ -76,8 +76,8 @@ class _StartDateTimePicker extends StatelessWidget {
 class _EndDateTimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final color = context.select((HabitBloc bloc) => bloc.state.color);
-    final date = context.select((HabitBloc bloc) => bloc.state.endDate);
+    final color = context.select((HabitFormBloc bloc) => bloc.state.color);
+    final date = context.select((HabitFormBloc bloc) => bloc.state.endDate);
     return ElevatedButton(
       onPressed: () async {
         final pickedDate = await showDatePicker(
@@ -96,8 +96,8 @@ class _EndDateTimePicker extends StatelessWidget {
           },
         );
 
-        if (pickedDate != null) {
-          context.read<HabitBloc>().add(HabitEndDateChanged(pickedDate));
+        if (pickedDate != null && context.mounted) {
+          context.read<HabitFormBloc>().add(HabitEndDateChanged(pickedDate));
         }
       },
       child: Row(

@@ -100,18 +100,80 @@ class DatabaseClient {
     }
   }
 
-  Future<List<Habit>> getAllHabits() async {
+  Stream<List<Habit>> getAllHabits() {
     try {
-      final snapshot = await _firestore
+      final snapshots = _firestore
           .collection('users')
           .doc(_userId)
           .collection('habits')
-          .get();
-      return snapshot.docs.map((doc) => Habit.fromJson(doc.data())).toList();
+          .snapshots();
+      return snapshots.map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => Habit.fromJson(doc.data())).toList(),
+      );
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
       throw DatabaseFailure();
     }
+  }
+
+  Stream<List<Habit>> getHabitsForConcreteDay(
+    String weekday,
+    DateTime selectedDate,
+  ) {
+    try {
+      final snapshots = _firestore
+          .collection('users')
+          .doc(_userId)
+          .collection('habits')
+          .where('weekdays', arrayContains: weekday)
+          .snapshots();
+
+      return snapshots.map(
+        (snapshot) => snapshot.docs
+            .map((doc) => Habit.fromJson(doc.data()))
+            .where(
+              (habit) => habit.isWithinDateRange(
+                selectedDate: selectedDate,
+                habit: habit,
+              ),
+            )
+            .toList(),
+      );
+    } on FirebaseException catch (e) {
+      throw DatabaseFailure.fromCode(e.code);
+    } catch (_) {
+      throw DatabaseFailure();
+    }
+  }
+}
+
+extension DateRange on Habit {
+  bool isWithinDateRange({
+    required DateTime selectedDate,
+    required Habit habit,
+  }) {
+    final selected = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+    );
+    final startDate = DateTime(
+      habit.startDate.year,
+      habit.startDate.month,
+      habit.startDate.day,
+    );
+    DateTime? endDate = habit.endDate != null
+        ? DateTime(
+            habit.endDate!.year,
+            habit.endDate!.month,
+            habit.endDate!.day,
+          )
+        : null;
+
+    return selected.isAtSameMomentAs(startDate) ||
+        selected.isAfter(startDate) &&
+            (endDate == null || selectedDate.isBefore(endDate));
   }
 }

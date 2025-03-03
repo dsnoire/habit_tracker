@@ -18,7 +18,7 @@ class Habit extends Equatable {
   final String id;
   final String name;
   final int color;
-  final String icon;
+  final int icon;
   final Set<String> weekdays;
   final DateTime startDate;
   final DateTime? endDate;
@@ -27,7 +27,7 @@ class Habit extends Equatable {
     String? id,
     String? name,
     int? color,
-    String? icon,
+    int? icon,
     Set<String>? weekdays,
     DateTime? startDate,
     DateTime? endDate,

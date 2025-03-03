@@ -1,13 +1,13 @@
-part of 'habit_bloc.dart';
+part of 'habit_form_bloc.dart';
 
-sealed class HabitEvent extends Equatable {
-  const HabitEvent();
+sealed class HabitFormEvent extends Equatable {
+  const HabitFormEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class HabitNameChanged extends HabitEvent {
+final class HabitNameChanged extends HabitFormEvent {
   const HabitNameChanged(this.name);
   final String name;
 
@@ -15,7 +15,7 @@ class HabitNameChanged extends HabitEvent {
   List<Object> get props => [name];
 }
 
-class HabitColorChanged extends HabitEvent {
+final class HabitColorChanged extends HabitFormEvent {
   const HabitColorChanged(this.color);
   final Color color;
 
@@ -23,7 +23,7 @@ class HabitColorChanged extends HabitEvent {
   List<Object> get props => [color];
 }
 
-class HabitIconChanged extends HabitEvent {
+final class HabitIconChanged extends HabitFormEvent {
   const HabitIconChanged(this.icon);
   final IconData icon;
 
@@ -31,7 +31,7 @@ class HabitIconChanged extends HabitEvent {
   List<Object> get props => [icon];
 }
 
-class HabitWeekdayToggled extends HabitEvent {
+final class HabitWeekdayToggled extends HabitFormEvent {
   const HabitWeekdayToggled(this.weekday);
   final String weekday;
 
@@ -39,7 +39,7 @@ class HabitWeekdayToggled extends HabitEvent {
   List<Object> get props => [weekday];
 }
 
-class HabitStartDateChanged extends HabitEvent {
+final class HabitStartDateChanged extends HabitFormEvent {
   const HabitStartDateChanged(this.date);
   final DateTime date;
 
@@ -47,7 +47,7 @@ class HabitStartDateChanged extends HabitEvent {
   List<Object> get props => [date];
 }
 
-class HabitEndDateChanged extends HabitEvent {
+final class HabitEndDateChanged extends HabitFormEvent {
   const HabitEndDateChanged(this.date);
   final DateTime date;
 
@@ -55,4 +55,4 @@ class HabitEndDateChanged extends HabitEvent {
   List<Object> get props => [date];
 }
 
-class HabitFormSubmitted extends HabitEvent {}
+final class HabitFormSubmitted extends HabitFormEvent {}
