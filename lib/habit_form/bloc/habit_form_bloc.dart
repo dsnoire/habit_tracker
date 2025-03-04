@@ -61,7 +61,9 @@ class HabitFormBloc extends Bloc<HabitFormEvent, HabitFormState> {
     final updatedWeekdays = Set<String>.from(state.weekdays);
     final weekday = event.weekday;
     if (updatedWeekdays.contains(weekday)) {
-      updatedWeekdays.remove(weekday);
+      if (updatedWeekdays.length > 1) {
+        updatedWeekdays.remove(weekday);
+      }
     } else {
       updatedWeekdays.add(weekday);
     }

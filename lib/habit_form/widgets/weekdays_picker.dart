@@ -33,7 +33,7 @@ class _WeekdayTile extends StatelessWidget {
     final color = context.select((HabitFormBloc bloc) => bloc.state.color);
     final selectedWeekdays =
         context.select((HabitFormBloc bloc) => bloc.state.weekdays);
-    final weekdays = [
+    final weekdays = {
       'Monday',
       'Tuesday',
       'Wednesday',
@@ -41,13 +41,13 @@ class _WeekdayTile extends StatelessWidget {
       'Friday',
       'Saturday',
       'Sunday'
-    ];
+    };
 
     return Row(
       children: List.generate(
         weekdays.length,
         (index) {
-          final weekday = weekdays[index];
+          final weekday = weekdays.elementAt(index);
           final isSelected = selectedWeekdays.contains(weekday);
           return Expanded(
             child: GestureDetector(
