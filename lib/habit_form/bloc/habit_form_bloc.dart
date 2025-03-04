@@ -83,7 +83,7 @@ class HabitFormBloc extends Bloc<HabitFormEvent, HabitFormState> {
   }
 
   Future<void> _onHabitFormSubmitted(
-    HabitFormEvent event,
+    HabitFormSubmitted event,
     Emitter<HabitFormState> emit,
   ) async {
     if (!state.isValid) return;

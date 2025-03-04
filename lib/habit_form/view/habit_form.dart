@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
@@ -15,24 +16,31 @@ class HabitForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('New Habit'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          spacing: AppSpacing.xlg,
-          children: [
-            _NameTextInput(),
-            ColorPicker(),
-            IconPicker(),
-            WeekdaysPicker(),
-            SchedulePicker(),
-            Spacer(),
-            _DoneButton(),
-          ],
+    return BlocListener<HabitFormBloc, HabitFormState>(
+      listener: (context, state) {
+        if (state.status.isSuccess) {
+          context.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('New Habit'),
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            spacing: AppSpacing.xlg,
+            children: [
+              _NameTextInput(),
+              ColorPicker(),
+              IconPicker(),
+              WeekdaysPicker(),
+              SchedulePicker(),
+              Spacer(),
+              _DoneButton(),
+            ],
+          ),
         ),
       ),
     );

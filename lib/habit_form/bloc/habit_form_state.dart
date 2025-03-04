@@ -33,6 +33,7 @@ final class HabitFormState extends Equatable {
         weekdays,
         startDate,
         endDate,
+        status,
         isValid,
         errorMessage,
       ];
