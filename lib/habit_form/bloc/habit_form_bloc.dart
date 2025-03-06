@@ -91,9 +91,8 @@ class HabitFormBloc extends Bloc<HabitFormEvent, HabitFormState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _habitRepository.addHabit(
+      await _habitRepository.addOrUpdateHabit(
         Habit(
-          id: '',
           name: state.name.value,
           color: state.color.value,
           icon: state.icon.codePoint,

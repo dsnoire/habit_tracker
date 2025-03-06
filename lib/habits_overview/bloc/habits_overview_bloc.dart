@@ -11,6 +11,7 @@ class HabitsOverviewBloc
   HabitsOverviewBloc(this._habitRepository) : super(HabitsOverviewState()) {
     on<HabitsOverviewSubscriptionRequested>(_onSubscriptionRequested);
     on<HabitsOverviewByDateRequested>(_onSubscriptionByDateRequested);
+    on<HabitsOverviewCompletionToggled>(_onCompletionToggled);
   }
 
   final HabitRepository _habitRepository;
@@ -76,5 +77,13 @@ class HabitsOverviewBloc
     } catch (_) {
       emit(state.copyWith(status: HabitsOverviewStatus.failure));
     }
+  }
+
+  Future<void> _onCompletionToggled(
+    HabitsOverviewCompletionToggled event,
+    Emitter<HabitsOverviewState> emit,
+  ) async {
+    final updatedHabit = event.habit.copyWith(isCompleted: event.isCompleted);
+    await _habitRepository.addOrUpdateHabit(updatedHabit);
   }
 }

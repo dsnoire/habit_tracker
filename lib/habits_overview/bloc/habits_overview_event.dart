@@ -23,3 +23,19 @@ final class HabitsOverviewByDateRequested extends HabitsOverviewEvent {
         selectedDate,
       ];
 }
+
+final class HabitsOverviewCompletionToggled extends HabitsOverviewEvent {
+  const HabitsOverviewCompletionToggled({
+    required this.habit,
+    required this.isCompleted,
+  });
+
+  final Habit habit;
+  final bool isCompleted;
+
+  @override
+  List<Object> get props => [
+        habit,
+        isCompleted,
+      ];
+}

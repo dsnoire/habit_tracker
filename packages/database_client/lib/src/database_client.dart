@@ -53,16 +53,20 @@ class DatabaseClient {
     }
   }
 
-  Future<void> addHabit(Habit habit) async {
+  Future<void> addOrUpdateHabit(Habit habit) async {
     try {
-      final docRef = _firestore
-          .collection('users')
-          .doc(_userId)
-          .collection('habits')
-          .doc();
+      final collectionRef =
+          _firestore.collection('users').doc(_userId).collection('habits');
+
+      final docRef =
+          habit.id != null ? collectionRef.doc(habit.id) : collectionRef.doc();
+
       final habitWithId = habit.copyWith(id: docRef.id);
 
-      await docRef.set(habitWithId.toJson());
+      await docRef.set(
+        habitWithId.toJson(),
+        SetOptions(merge: true),
+      );
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {

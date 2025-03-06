@@ -7,7 +7,7 @@ part of 'habit.dart';
 // **************************************************************************
 
 Habit _$HabitFromJson(Map<String, dynamic> json) => Habit(
-      id: json['id'] as String,
+      id: json['id'] as String?,
       name: json['name'] as String,
       color: (json['color'] as num).toInt(),
       icon: (json['icon'] as num).toInt(),
@@ -17,6 +17,7 @@ Habit _$HabitFromJson(Map<String, dynamic> json) => Habit(
       endDate: json['endDate'] == null
           ? null
           : DateTime.parse(json['endDate'] as String),
+      isCompleted: json['isCompleted'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
@@ -27,4 +28,5 @@ Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
       'weekdays': instance.weekdays.toList(),
       'startDate': instance.startDate.toIso8601String(),
       'endDate': instance.endDate?.toIso8601String(),
+      'isCompleted': instance.isCompleted,
     };

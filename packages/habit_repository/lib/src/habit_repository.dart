@@ -4,9 +4,9 @@ class HabitRepository {
   HabitRepository(this._databaseClient);
   final DatabaseClient _databaseClient;
 
-  Future<void> addHabit(Habit habit) async {
+  Future<void> addOrUpdateHabit(Habit habit) async {
     try {
-      await _databaseClient.addHabit(habit);
+      await _databaseClient.addOrUpdateHabit(habit);
     } on DatabaseFailure {
       rethrow;
     } catch (_) {

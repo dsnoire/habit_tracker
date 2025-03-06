@@ -6,22 +6,24 @@ part 'habit.g.dart';
 @JsonSerializable()
 class Habit extends Equatable {
   const Habit({
-    required this.id,
+    this.id,
     required this.name,
     required this.color,
     required this.icon,
     required this.weekdays,
     required this.startDate,
     this.endDate,
+    this.isCompleted = false,
   });
 
-  final String id;
+  final String? id;
   final String name;
   final int color;
   final int icon;
   final Set<String> weekdays;
   final DateTime startDate;
   final DateTime? endDate;
+  final bool isCompleted;
 
   Habit copyWith({
     String? id,
@@ -31,6 +33,7 @@ class Habit extends Equatable {
     Set<String>? weekdays,
     DateTime? startDate,
     DateTime? endDate,
+    bool? isCompleted,
   }) {
     return Habit(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class Habit extends Equatable {
       weekdays: weekdays ?? this.weekdays,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
@@ -56,5 +60,6 @@ class Habit extends Equatable {
         weekdays,
         startDate,
         endDate,
+        isCompleted,
       ];
 }

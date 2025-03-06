@@ -40,7 +40,10 @@ class HomeDrawer extends StatelessWidget {
                   } else if (state.habits.isEmpty) {
                     return _NoHabitsInformation();
                   } else {
-                    return HabitsOverviewView(habits: state.habits);
+                    return HabitsOverviewView(
+                      habits: state.habits,
+                      hasCompletionStatus: false,
+                    );
                   }
                 },
               ),
