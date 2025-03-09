@@ -1,6 +1,7 @@
 import 'package:database_client/database_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
@@ -43,64 +44,133 @@ class _HabitListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceGrey,
-        borderRadius: BorderRadius.circular(32),
+    return GestureDetector(
+      onLongPress: () {
+        showModalBottomSheet(
+          context: context,
+          useRootNavigator: true,
+          backgroundColor: AppColors.background,
+          builder: (modalContext) {
+            return BlocProvider.value(
+              value: BlocProvider.of<HabitsOverviewBloc>(context),
+              child: _HabitBottomSheet(habit: habit),
+            );
+          },
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceGrey,
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 25,
+              backgroundColor: Color(habit.color),
+              child: _HabitIcon(habit: habit),
+            ),
+            const SizedBox(width: AppSpacing.xlg),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  habit.name.length > 10
+                      ? '${habit.name.substring(0, 10)}...'
+                      : habit.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  hasCompletionStatus
+                      ? habit.isCompleted
+                          ? 'Completed'
+                          : 'Pending'
+                      : 'Habit',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: hasCompletionStatus
+                        ? habit.isCompleted
+                            ? AppColors.green
+                            : AppColors.whiteShadow
+                        : AppColors.whiteShadow,
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            if (hasCompletionStatus)
+              Checkbox(
+                value: habit.isCompleted,
+                activeColor: AppColors.green,
+                onChanged: (bool? value) =>
+                    context.read<HabitsOverviewBloc>().add(
+                          HabitsOverviewCompletionToggled(
+                            habit: habit,
+                            isCompleted: value!,
+                          ),
+                        ),
+              ),
+          ],
+        ),
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundColor: Color(habit.color),
-            child: _HabitIcon(habit: habit),
-          ),
-          const SizedBox(width: AppSpacing.xlg),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+}
+
+class _HabitBottomSheet extends StatelessWidget {
+  const _HabitBottomSheet({required this.habit});
+
+  final Habit habit;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            spacing: AppSpacing.lg,
             children: [
               Text(
-                habit.name.length > 10
-                    ? '${habit.name.substring(0, 10)}...'
-                    : habit.name,
-                overflow: TextOverflow.ellipsis,
+                '${habit.name} habit',
                 style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              Text(
-                hasCompletionStatus
-                    ? habit.isCompleted
-                        ? 'Completed'
-                        : 'Pending'
-                    : 'Habit',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: hasCompletionStatus
-                      ? habit.isCompleted
-                          ? AppColors.green
-                          : AppColors.whiteShadow
-                      : AppColors.whiteShadow,
+              ListTile(
+                tileColor: AppColors.surfaceGrey,
+                shape: StadiumBorder(),
+                leading: Icon(
+                  Icons.edit,
+                  color: AppColors.white,
                 ),
+                title: Text('Edit'),
+              ),
+              ListTile(
+                onTap: () {
+                  context.read<HabitsOverviewBloc>().add(
+                        HabitsOverviewHabitDeleted(habit),
+                      );
+                  context.pop();
+                },
+                tileColor: AppColors.surfaceGrey,
+                shape: StadiumBorder(),
+                leading: Icon(
+                  Icons.delete,
+                  color: AppColors.red,
+                ),
+                title: Text('Delete'),
               ),
             ],
           ),
-          Spacer(),
-          if (hasCompletionStatus)
-            Checkbox(
-              value: habit.isCompleted,
-              activeColor: AppColors.green,
-              onChanged: (bool? value) =>
-                  context.read<HabitsOverviewBloc>().add(
-                        HabitsOverviewCompletionToggled(
-                          habit: habit,
-                          isCompleted: value!,
-                        ),
-                      ),
-            ),
-        ],
+        ),
       ),
     );
   }

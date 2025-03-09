@@ -12,6 +12,7 @@ class HabitsOverviewBloc
     on<HabitsOverviewSubscriptionRequested>(_onSubscriptionRequested);
     on<HabitsOverviewByDateRequested>(_onSubscriptionByDateRequested);
     on<HabitsOverviewCompletionToggled>(_onCompletionToggled);
+    on<HabitsOverviewHabitDeleted>(_onHabitDeleted);
   }
 
   final HabitRepository _habitRepository;
@@ -85,5 +86,14 @@ class HabitsOverviewBloc
   ) async {
     final updatedHabit = event.habit.copyWith(isCompleted: event.isCompleted);
     await _habitRepository.addOrUpdateHabit(updatedHabit);
+  }
+
+  Future<void> _onHabitDeleted(
+    HabitsOverviewHabitDeleted event,
+    Emitter<HabitsOverviewState> emit,
+  ) async {
+    final habitId = event.habit.id;
+    if (habitId == null) return;
+    await _habitRepository.removeHabit(habitId);
   }
 }

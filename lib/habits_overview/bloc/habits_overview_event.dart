@@ -39,3 +39,12 @@ final class HabitsOverviewCompletionToggled extends HabitsOverviewEvent {
         isCompleted,
       ];
 }
+
+final class HabitsOverviewHabitDeleted extends HabitsOverviewEvent {
+  const HabitsOverviewHabitDeleted(this.habit);
+
+  final Habit habit;
+
+  @override
+  List<Object> get props => [habit];
+}
