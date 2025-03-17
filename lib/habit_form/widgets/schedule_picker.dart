@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:habit_tracker/app/extensions/extensions.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
@@ -22,93 +22,73 @@ class SchedulePicker extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.lg),
-        _StartDateTimePicker(),
+        _DateTimePicker(
+          label: 'Start',
+          dateSelector: (bloc) => bloc.state.startDate,
+          onDateChanged: (date) =>
+              context.read<HabitFormBloc>().add(HabitStartDateChanged(date)),
+        ),
         const SizedBox(height: AppSpacing.lg),
-        _EndDateTimePicker(),
+        _DateTimePicker(
+          label: 'End',
+          dateSelector: (bloc) => bloc.state.endDate,
+          onDateChanged: (date) =>
+              context.read<HabitFormBloc>().add(HabitEndDateChanged(date)),
+          defaultText: 'Never',
+        ),
       ],
     );
   }
 }
 
-class _StartDateTimePicker extends StatelessWidget {
+class _DateTimePicker extends StatelessWidget {
+  const _DateTimePicker({
+    required this.label,
+    required this.dateSelector,
+    required this.onDateChanged,
+    this.defaultText,
+  });
+
+  final String label;
+  final DateTime? Function(HabitFormBloc bloc) dateSelector;
+  final void Function(DateTime date) onDateChanged;
+  final String? defaultText;
+
   @override
   Widget build(BuildContext context) {
     final color = context.select((HabitFormBloc bloc) => bloc.state.color);
-    final date = context.select((HabitFormBloc bloc) => bloc.state.startDate);
+    final date = context.select(dateSelector);
+
     return ElevatedButton(
       onPressed: () async {
+        final currentDate = DateTime.now().add(Duration(days: 0));
         final pickedDate = await showDatePicker(
           context: context,
-          firstDate: DateTime(DateTime.now().year),
+          initialDate: currentDate,
+          firstDate: currentDate,
           lastDate: DateTime(2100),
           initialEntryMode: DatePickerEntryMode.calendarOnly,
           builder: (context, child) {
             return Theme(
-                data: Theme.of(context).copyWith(
-                  colorScheme: ColorScheme.dark(
-                    primary: color,
-                  ),
-                ),
-                child: child!);
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.dark(primary: color),
+              ),
+              child: child!,
+            );
           },
         );
 
         if (pickedDate != null && context.mounted) {
-          context.read<HabitFormBloc>().add(HabitStartDateChanged(pickedDate));
+          onDateChanged(pickedDate);
         }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Start'),
+          Text(label),
           Text(
-            DateFormat('MMM d yyyy').format(date),
-            style: TextStyle(
-              color: AppColors.grey,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _EndDateTimePicker extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final color = context.select((HabitFormBloc bloc) => bloc.state.color);
-    final date = context.select((HabitFormBloc bloc) => bloc.state.endDate);
-    return ElevatedButton(
-      onPressed: () async {
-        final pickedDate = await showDatePicker(
-          context: context,
-          firstDate: DateTime(DateTime.now().year),
-          lastDate: DateTime(2100),
-          initialEntryMode: DatePickerEntryMode.calendarOnly,
-          builder: (context, child) {
-            return Theme(
-                data: Theme.of(context).copyWith(
-                  colorScheme: ColorScheme.dark(
-                    primary: color,
-                  ),
-                ),
-                child: child!);
-          },
-        );
-
-        if (pickedDate != null && context.mounted) {
-          context.read<HabitFormBloc>().add(HabitEndDateChanged(pickedDate));
-        }
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('End'),
-          Text(
-            date != null ? DateFormat('MMM d yyyy').format(date) : 'Never',
-            style: TextStyle(
-              color: AppColors.grey,
-            ),
+            date?.monthDayYear ?? defaultText ?? '',
+            style: TextStyle(color: AppColors.grey),
           ),
         ],
       ),
