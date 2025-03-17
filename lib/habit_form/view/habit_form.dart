@@ -16,6 +16,8 @@ class HabitForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isNewHabit =
+        context.select((HabitFormBloc bloc) => bloc.state.isNewHabit);
     return BlocListener<HabitFormBloc, HabitFormState>(
       listener: (context, state) {
         if (state.status.isSuccess) {
@@ -24,7 +26,7 @@ class HabitForm extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('New Habit'),
+          title: Text(isNewHabit ? 'New Habit' : 'Edit Habit'),
           centerTitle: true,
         ),
         body: Padding(
@@ -52,7 +54,10 @@ class _NameTextInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final displayError =
         context.select((HabitFormBloc bloc) => bloc.state.name.displayError);
-    return TextField(
+    final initialValue =
+        context.select((HabitFormBloc bloc) => bloc.state.name.value);
+    return TextFormField(
+      initialValue: initialValue,
       onChanged: (value) =>
           context.read<HabitFormBloc>().add(HabitNameChanged(value)),
       decoration: InputDecoration(
