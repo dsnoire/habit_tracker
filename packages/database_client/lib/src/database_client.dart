@@ -49,7 +49,7 @@ class DatabaseClient {
     } on FirebaseException catch (e) {
       throw DatabaseFailure.fromCode(e.code);
     } catch (_) {
-      throw DatabaseClient();
+      throw DatabaseFailure();
     }
   }
 
@@ -89,7 +89,10 @@ class DatabaseClient {
     }
   }
 
-  Future<void> editHabit(String habitId, Habit updatedHabit) async {
+  Future<void> editHabit({
+    required String habitId,
+    required Habit updatedHabit,
+  }) async {
     try {
       await _firestore
           .collection('users')
@@ -122,16 +125,16 @@ class DatabaseClient {
     }
   }
 
-  Stream<List<Habit>> getHabitsForConcreteDay(
-    String weekday,
-    DateTime selectedDate,
-  ) {
+  Stream<List<Habit>> getHabitsForConcreteDay({
+    required String dayOfTheWeek,
+    required DateTime selectedDate,
+  }) {
     try {
       final snapshots = _firestore
           .collection('users')
           .doc(_userId)
           .collection('habits')
-          .where('weekdays', arrayContains: weekday)
+          .where('weekdays', arrayContains: dayOfTheWeek)
           .snapshots();
 
       return snapshots.map(

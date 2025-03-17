@@ -11,15 +11,15 @@ final class HabitsOverviewSubscriptionRequested extends HabitsOverviewEvent {}
 
 final class HabitsOverviewByDateRequested extends HabitsOverviewEvent {
   const HabitsOverviewByDateRequested(
-    this.weekday,
+    this.dayOfTheWeek,
     this.selectedDate,
   );
-  final String weekday;
+  final String dayOfTheWeek;
   final DateTime selectedDate;
 
   @override
   List<Object> get props => [
-        weekday,
+        dayOfTheWeek,
         selectedDate,
       ];
 }

@@ -1,28 +1,20 @@
 part of 'habit_form_bloc.dart';
 
-final class HabitFormState extends Equatable {
-  HabitFormState({
-    this.name = const HabitName.pure(),
-    Color? color,
-    IconData? icon,
-    this.weekdays = const {
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
-    },
-    DateTime? startDate,
-    this.endDate,
-    this.status = FormzSubmissionStatus.initial,
-    this.isValid = false,
+class HabitFormState extends Equatable {
+  const HabitFormState({
+    required this.initialHabit,
+    required this.name,
+    required this.color,
+    required this.icon,
+    required this.weekdays,
+    required this.startDate,
+    required this.endDate,
+    required this.status,
+    required this.isValid,
     this.errorMessage,
-  })  : color = color ?? HabitColors.defaultColor,
-        icon = icon ?? HabitIcons.defaultIcon,
-        startDate = startDate ?? DateTime.now();
+  });
 
+  final Habit? initialHabit;
   final HabitName name;
   final Color color;
   final IconData icon;
@@ -33,8 +25,11 @@ final class HabitFormState extends Equatable {
   final bool isValid;
   final String? errorMessage;
 
+  bool get isNewHabit => initialHabit == null;
+
   @override
   List<Object?> get props => [
+        initialHabit,
         name,
         color,
         icon,
@@ -47,6 +42,7 @@ final class HabitFormState extends Equatable {
       ];
 
   HabitFormState copyWith({
+    Habit? initialHabit,
     HabitName? name,
     Color? color,
     IconData? icon,
@@ -58,6 +54,7 @@ final class HabitFormState extends Equatable {
     String? errorMessage,
   }) {
     return HabitFormState(
+      initialHabit: initialHabit ?? this.initialHabit,
       name: name ?? this.name,
       color: color ?? this.color,
       icon: icon ?? this.icon,

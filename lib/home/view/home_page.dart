@@ -3,17 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/habits_overview/bloc/habits_overview_bloc.dart';
 import 'package:habit_tracker/home/view/home_view.dart';
+import '../../app/extensions/extensions.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
     return BlocProvider(
       create: (context) => HabitsOverviewBloc(
         context.read<HabitRepository>(),
-      )..add(
+      )
+        ..add(
           HabitsOverviewSubscriptionRequested(),
+        )
+        ..add(
+          HabitsOverviewByDateRequested(
+            now.dayOfTheWeek,
+            now,
+          ),
         ),
       child: HomeView(),
     );

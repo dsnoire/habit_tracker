@@ -145,6 +145,13 @@ class _HabitBottomSheet extends StatelessWidget {
                 ),
               ),
               ListTile(
+                onTap: () {
+                  context.pop();
+                  context.push(
+                    '/edit-habit',
+                    extra: habit,
+                  );
+                },
                 tileColor: AppColors.surfaceGrey,
                 shape: StadiumBorder(),
                 leading: Icon(
@@ -153,20 +160,26 @@ class _HabitBottomSheet extends StatelessWidget {
                 ),
                 title: Text('Edit'),
               ),
-              ListTile(
-                onTap: () {
-                  context.read<HabitsOverviewBloc>().add(
-                        HabitsOverviewHabitDeleted(habit),
-                      );
-                  context.pop();
+              BlocListener<HabitsOverviewBloc, HabitsOverviewState>(
+                listener: (context, state) {
+                  if (state.status == HabitsOverviewStatus.success) {
+                    context.pop();
+                  }
                 },
-                tileColor: AppColors.surfaceGrey,
-                shape: StadiumBorder(),
-                leading: Icon(
-                  Icons.delete,
-                  color: AppColors.red,
+                child: ListTile(
+                  onTap: () {
+                    context.read<HabitsOverviewBloc>().add(
+                          HabitsOverviewHabitDeleted(habit),
+                        );
+                  },
+                  tileColor: AppColors.surfaceGrey,
+                  shape: StadiumBorder(),
+                  leading: Icon(
+                    Icons.delete,
+                    color: AppColors.red,
+                  ),
+                  title: Text('Delete'),
                 ),
-                title: Text('Delete'),
               ),
             ],
           ),

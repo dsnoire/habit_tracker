@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_tracker/habits_overview/bloc/habits_overview_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../app/colors/app_colors.dart';
+import '../../app/extensions/extensions.dart';
 import '../../app/spacing/app_spacing.dart';
 
 class HorizontalDatePicker extends StatefulWidget {
@@ -43,16 +43,7 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
 
     selectedIndex = dates.indexWhere((date) => date.day == now.day);
     _scrollController = ScrollController();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToSelectedDay();
-    });
-
-    final weekday = DateFormat('EEEE').format(now);
-
-    context
-        .read<HabitsOverviewBloc>()
-        .add(HabitsOverviewByDateRequested(weekday, now));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToSelectedDay());
   }
 
   void _scrollToSelectedDay() {
@@ -89,15 +80,15 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
               setState(() {
                 selectedIndex = index;
               });
-              final selectedWeekday =
-                  DateFormat('EEEE').format(date); // "Monday", "Tuesday", etc.
+              final dayOfTheWeek =
+                  date.dayOfTheWeek; // "Monday", "Tuesday", etc.
 
-              log("Selected Day: $selectedWeekday");
+              log("Selected Day: $dayOfTheWeek");
               log('$date');
               context
                   .read<HabitsOverviewBloc>()
                   .add(HabitsOverviewByDateRequested(
-                    selectedWeekday,
+                    dayOfTheWeek,
                     date,
                   ));
             },
@@ -112,7 +103,7 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    DateFormat('EEE').format(date), // Day name  (Mon, Tue)
+                    date.dayName, // Day name  (Mon, Tue)
                     style: TextStyle(
                       fontSize: 12,
                       color: isToday ? AppColors.white : AppColors.grey,

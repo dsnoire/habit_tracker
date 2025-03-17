@@ -54,8 +54,8 @@ class HabitsOverviewBloc
     emit(state.copyWith(status: HabitsOverviewStatus.loading));
     try {
       final habits = _habitRepository.getHabitsForConcreteDay(
-        event.weekday,
-        event.selectedDate,
+        dayOfTheWeek: event.dayOfTheWeek,
+        selectedDate: event.selectedDate,
       );
       return await emit.forEach<List<Habit>>(
         habits,
@@ -84,16 +84,46 @@ class HabitsOverviewBloc
     HabitsOverviewCompletionToggled event,
     Emitter<HabitsOverviewState> emit,
   ) async {
-    final updatedHabit = event.habit.copyWith(isCompleted: event.isCompleted);
-    await _habitRepository.addOrUpdateHabit(updatedHabit);
+    try {
+      final updatedHabit = event.habit.copyWith(isCompleted: event.isCompleted);
+      await _habitRepository.addOrUpdateHabit(updatedHabit);
+    } on DatabaseFailure catch (e) {
+      emit(
+        state.copyWith(
+          errorMessage: e.message,
+          status: HabitsOverviewStatus.failure,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(status: HabitsOverviewStatus.failure),
+      );
+    }
   }
 
   Future<void> _onHabitDeleted(
     HabitsOverviewHabitDeleted event,
     Emitter<HabitsOverviewState> emit,
   ) async {
-    final habitId = event.habit.id;
-    if (habitId == null) return;
-    await _habitRepository.removeHabit(habitId);
+    emit(state.copyWith(status: HabitsOverviewStatus.loading));
+    try {
+      final habitId = event.habit.id;
+      if (habitId == null) return;
+
+      await Future.delayed(Duration(seconds: 3));
+      await _habitRepository.removeHabit(habitId);
+      emit(state.copyWith(status: HabitsOverviewStatus.success));
+    } on DatabaseFailure catch (e) {
+      emit(
+        state.copyWith(
+          errorMessage: e.message,
+          status: HabitsOverviewStatus.failure,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(status: HabitsOverviewStatus.failure),
+      );
+    }
   }
 }

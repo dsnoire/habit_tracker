@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:database_client/database_client.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -88,6 +89,19 @@ class AppRouter {
               return MaterialPage(
                 child: HabitPage(
                   key: state.pageKey,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: '/edit-habit',
+            parentNavigatorKey: _rootNavigator,
+            pageBuilder: (context, state) {
+              final habit = state.extra as Habit;
+              return MaterialPage(
+                child: HabitPage(
+                  key: state.pageKey,
+                  initialHabit: habit,
                 ),
               );
             },

@@ -13,7 +13,28 @@ part 'habit_form_event.dart';
 part 'habit_form_state.dart';
 
 class HabitFormBloc extends Bloc<HabitFormEvent, HabitFormState> {
-  HabitFormBloc(this._habitRepository) : super(HabitFormState()) {
+  HabitFormBloc({
+    required HabitRepository habitRepository,
+    Habit? initialHabit,
+  })  : _habitRepository = habitRepository,
+        super(
+          HabitFormState(
+            initialHabit: initialHabit,
+            name: initialHabit == null
+                ? HabitName.pure()
+                : HabitName.dirty(initialHabit.name),
+            color: Color(initialHabit?.color ?? HabitColors.defaultColor.value),
+            icon: IconData(
+              initialHabit?.icon ?? HabitIcons.defaultIcon.codePoint,
+              fontFamily: 'MaterialIcons',
+            ),
+            weekdays: initialHabit?.weekdays ?? {},
+            startDate: initialHabit?.startDate ?? DateTime.now(),
+            endDate: initialHabit?.endDate,
+            status: FormzSubmissionStatus.initial,
+            isValid: false,
+          ),
+        ) {
     on<HabitNameChanged>(_onNameChanged);
     on<HabitFormSubmitted>(_onHabitFormSubmitted);
     on<HabitColorChanged>(_onColorChanged);
@@ -93,6 +114,7 @@ class HabitFormBloc extends Bloc<HabitFormEvent, HabitFormState> {
     try {
       await _habitRepository.addOrUpdateHabit(
         Habit(
+          id: state.isNewHabit ? null : state.initialHabit!.id,
           name: state.name.value,
           color: state.color.value,
           icon: state.icon.codePoint,

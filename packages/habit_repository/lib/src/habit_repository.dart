@@ -24,9 +24,15 @@ class HabitRepository {
     }
   }
 
-  Future<void> editHabit(String habitId, Habit updatedHabit) async {
+  Future<void> editHabit({
+    required String habitId,
+    required Habit updatedHabit,
+  }) async {
     try {
-      await _databaseClient.editHabit(habitId, updatedHabit);
+      await _databaseClient.editHabit(
+        habitId: habitId,
+        updatedHabit: updatedHabit,
+      );
     } on DatabaseFailure {
       rethrow;
     } catch (_) {
@@ -44,14 +50,14 @@ class HabitRepository {
     }
   }
 
-  Stream<List<Habit>> getHabitsForConcreteDay(
-    String weekday,
-    DateTime selectedDate,
-  ) {
+  Stream<List<Habit>> getHabitsForConcreteDay({
+    required String dayOfTheWeek,
+    required DateTime selectedDate,
+  }) {
     try {
       return _databaseClient.getHabitsForConcreteDay(
-        weekday,
-        selectedDate,
+        dayOfTheWeek: dayOfTheWeek,
+        selectedDate: selectedDate,
       );
     } on DatabaseFailure {
       rethrow;
