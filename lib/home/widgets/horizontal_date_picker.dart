@@ -7,6 +7,7 @@ import 'package:habit_tracker/habits_overview/bloc/habits_overview_bloc.dart';
 import '../../app/colors/app_colors.dart';
 import '../../app/extensions/extensions.dart';
 import '../../app/spacing/app_spacing.dart';
+import '../cubit/date_cubit.dart';
 
 class HorizontalDatePicker extends StatefulWidget {
   const HorizontalDatePicker({super.key});
@@ -77,11 +78,9 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
 
           return GestureDetector(
             onTap: () {
-              setState(() {
-                selectedIndex = index;
-              });
-              final dayOfTheWeek =
-                  date.dayOfTheWeek; // "Monday", "Tuesday", etc.
+              setState(() => selectedIndex = index);
+              context.read<DateCubit>().dateChanged(date);
+              final dayOfTheWeek = date.dayOfTheWeek;
 
               log("Selected Day: $dayOfTheWeek");
               log('$date');
@@ -103,7 +102,7 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    date.dayName, // Day name  (Mon, Tue)
+                    date.dayName,
                     style: TextStyle(
                       fontSize: 12,
                       color: isToday ? AppColors.white : AppColors.grey,
@@ -112,7 +111,7 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
                   ),
                   SizedBox(height: AppSpacing.xs),
                   Text(
-                    '${date.day}', // Day of the month (1, 2, 3)
+                    '${date.day}',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: AppColors.white,

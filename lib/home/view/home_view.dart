@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habit_tracker/app/extensions/extensions.dart';
 
 import '../../app/colors/app_colors.dart';
 import '../../app/spacing/app_spacing.dart';
 import '../../app/widgets/app_loading_indicator.dart';
 import '../../habits_overview/bloc/habits_overview_bloc.dart';
 import '../../habits_overview/view/habits_overview_view.dart';
+import '../cubit/date_cubit.dart';
 import '../widgets/home_drawer.dart';
 import '../widgets/horizontal_date_picker.dart';
 
@@ -16,9 +18,10 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedDate = context.select((DateCubit cubit) => cubit.state);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Today'),
+        title: Text(selectedDate.displayTodayOrDate),
         centerTitle: true,
         actions: [
           _SettingsButton(),
