@@ -89,24 +89,6 @@ class DatabaseClient {
     }
   }
 
-  Future<void> editHabit({
-    required String habitId,
-    required Habit updatedHabit,
-  }) async {
-    try {
-      await _firestore
-          .collection('users')
-          .doc(_userId)
-          .collection('habits')
-          .doc(habitId)
-          .update(updatedHabit.toJson());
-    } on FirebaseException catch (e) {
-      throw DatabaseFailure.fromCode(e.code);
-    } catch (_) {
-      throw DatabaseFailure();
-    }
-  }
-
   Stream<List<Habit>> getAllHabits() {
     try {
       final snapshots = _firestore

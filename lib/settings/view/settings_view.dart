@@ -14,34 +14,45 @@ class SettingsView extends StatelessWidget {
     final user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Settings'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          spacing: 16,
-          children: [
-            _AccountInformation(
-              user: user,
-            ),
-            const SizedBox(height: 16),
-            _SettingsTile(
-              icon: Icons.person_outline,
-              title: 'Account',
-            ),
-            _SettingsTile(
-              icon: Icons.notifications_outlined,
-              title: 'Notifications',
-            ),
-            _SettingsTile(
-              icon: Icons.remove_red_eye_outlined,
-              title: 'Appearance',
-            ),
-            Spacer(),
-            _LogOutButton(),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: AppSpacing.lg,
+        children: [
+          const SizedBox(height: AppSpacing.lg),
+          _SettingsTile(
+            icon: Icons.person_outline,
+            title: 'Account',
+            subtitle: user.email,
+          ),
+          _Divider(),
+          _SettingsTile(
+            icon: Icons.notifications_outlined,
+            title: 'Notifications',
+          ),
+          _Divider(),
+          _SettingsTile(
+            icon: Icons.remove_red_eye_outlined,
+            title: 'Appearance',
+          ),
+          Spacer(),
+          _LogOutButton(),
+        ],
       ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      color: AppColors.surfaceGrey,
+      indent: 12,
+      endIndent: 12,
+      thickness: 0.6,
     );
   }
 }
@@ -49,20 +60,23 @@ class SettingsView extends StatelessWidget {
 class _LogOutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: () => context.read<AppBloc>().add(AppLogOutPressed()),
-      label: Text(
-        'Log out',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+      child: TextButton.icon(
+        onPressed: () => context.read<AppBloc>().add(AppLogOutPressed()),
+        label: Text(
+          'Log out',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: AppColors.red,
+          ),
+        ),
+        icon: Icon(
+          Icons.logout_outlined,
+          size: 24,
           color: AppColors.red,
         ),
-      ),
-      icon: Icon(
-        Icons.logout_outlined,
-        size: 24,
-        color: AppColors.red,
       ),
     );
   }
@@ -72,23 +86,21 @@ class _SettingsTile extends StatelessWidget {
   const _SettingsTile({
     required this.icon,
     required this.title,
+    this.subtitle,
   });
   final IconData icon;
   final String title;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: AppColors.surfaceGrey,
-      contentPadding: EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
       leading: CircleAvatar(
-        backgroundColor: AppColors.white,
+        radius: 22,
+        backgroundColor: AppColors.surfaceGrey,
         child: Icon(
           icon,
-          color: AppColors.darkGrey,
+          color: AppColors.white,
         ),
       ),
       title: Text(
@@ -100,31 +112,9 @@ class _SettingsTile extends StatelessWidget {
       trailing: Icon(
         Icons.arrow_forward_ios,
         color: AppColors.grey,
+        size: 16,
       ),
-    );
-  }
-}
-
-class _AccountInformation extends StatelessWidget {
-  final UserModel user;
-  const _AccountInformation({
-    required this.user,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          CircleAvatar(
-            backgroundColor: AppColors.grey,
-            radius: 36,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            user.email ?? '',
-          ),
-        ],
-      ),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
     );
   }
 }

@@ -24,22 +24,6 @@ class HabitRepository {
     }
   }
 
-  Future<void> editHabit({
-    required String habitId,
-    required Habit updatedHabit,
-  }) async {
-    try {
-      await _databaseClient.editHabit(
-        habitId: habitId,
-        updatedHabit: updatedHabit,
-      );
-    } on DatabaseFailure {
-      rethrow;
-    } catch (_) {
-      rethrow;
-    }
-  }
-
   Stream<List<Habit>> getAllHabits() {
     try {
       return _databaseClient.getAllHabits();
